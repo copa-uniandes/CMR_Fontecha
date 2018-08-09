@@ -71,7 +71,7 @@ public class MainCMR {
 	public static String instancia_7="./data/Instancia7.dat";//incluye exponente
 	public static String instancia_8="./data/Instancia8.dat";//solo es de prueba, luego la puedo borrar
 	public static String rutiando=instancia_7;
-	public static String HeuristicaconEduyindata=ON;
+	public static String HeuristicaconEduyindata=OFF;
 	public static String EduyindataBIG=OFF;
 	public static int Eduyindatasize=21; //debe ser 21 para datos con eduyindata
 	public static String HeuristicasinMIP=ON;
