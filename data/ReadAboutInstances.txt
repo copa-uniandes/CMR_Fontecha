@@ -1,0 +1,5 @@
+Infomación Instancias
+Instancia 6: Instancia modificada para que los parámetros de las funciones de densidad de probabilidad volvieran a subir 
+en el horizonte de planeación, de lo contrario, tardarián un tiempo "infinito" en volver a subir.
+Instacia 7: En esta se incluye el exponente. El exponente fue generado aleatoriamente para cada nodo. El valor aleatorio 
+oscila entre 2 y 6.

@@ -1,0 +1,166 @@
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.866482590402e+00, best bound 2.866482590402e+00, gap 0.0%
+Solution
+20,0
+20,15
+20,23
+20,50
+20,36
+20,46
+20,20
+20,6
+20,25
+20,45
+20,9
+20,10
+20,22
+20,3
+20,13
+20,43
+20,33
+20,17
+20,24
+20,2
+20,30
+20,37
+20,61
+20,40
+20,18
+20,42
+20,51
+20,58
+20,48
+20,64
+20,59
+20,73
+20,54
+20,68
+20,71
+20,38
+20,0
+21,0
+21,74
+21,56
+21,26
+21,29
+21,28
+21,34
+21,31
+21,19
+21,47
+21,27
+21,14
+21,12
+21,16
+21,21
+21,1
+21,8
+21,11
+21,4
+21,41
+21,72
+21,70
+21,32
+21,5
+21,52
+21,55
+21,66
+21,69
+21,62
+21,53
+21,60
+21,63
+21,57
+21,39
+21,65
+21,67
+21,35
+21,49
+21,44
+21,7
+21,0
+valor de la fo: 2.866482590401972
+[[0, 15, 23, 50, 36, 46, 20, 6, 25, 45, 9, 10, 22, 3, 13, 43, 33, 17, 24, 2, 30, 37, 61, 40, 18, 42, 51, 58, 48, 64, 59, 73, 54, 68, 71, 38, 0], [0, 74, 56, 26, 29, 28, 34, 31, 19, 47, 27, 14, 12, 16, 21, 1, 8, 11, 4, 41, 72, 70, 32, 5, 52, 55, 66, 69, 62, 53, 60, 63, 57, 39, 65, 67, 35, 49, 44, 7, 0]]
+ Tmin: 42.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 1429 rows, 576 columns and 3290 nonzeros
+Coefficient statistics:
+  Matrix range    [3e-07, 5e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 5e+01]
+  RHS range       [2e-02, 5e+01]
+Presolve removed 679 rows and 199 columns
+Presolve time: 0.05s
+Presolved: 750 rows, 377 columns, 1743 nonzeros
+Variable types: 62 continuous, 315 integer (315 binary)
+Found heuristic solution: objective 1.3593898
+
+Root relaxation: objective 1.357483e+00, 439 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.35748    0  230    1.35939    1.35748  0.14%     -    0s
+     0     0    1.35822    0  217    1.35939    1.35822  0.09%     -    0s
+     0     0    1.35851    0  149    1.35939    1.35851  0.06%     -    0s
+     0     0    1.35859    0  152    1.35939    1.35859  0.06%     -    0s
+     0     0    1.35861    0  157    1.35939    1.35861  0.06%     -    0s
+     0     0    1.35861    0   82    1.35939    1.35861  0.06%     -    0s
+     0     0    1.35861    0  128    1.35939    1.35861  0.06%     -    0s
+     0     0    1.35900    0  102    1.35939    1.35900  0.03%     -    0s
+     0     0     cutoff    0         1.35939    1.35939  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 71
+  Implied bound: 1
+  Clique: 53
+  MIR: 44
+
+Explored 0 nodes (2640 simplex iterations) in 0.30 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.359389755370e+00, best bound 1.359389755370e+00, gap 0.0%
+EL VALOR DE LA RUTA: 0 es 1.3593897553699592
+ Tmin: 42.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 1589 rows, 640 columns and 3658 nonzeros
+Coefficient statistics:
+  Matrix range    [2e-07, 5e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 5e+01]
+  RHS range       [2e-02, 5e+01]
+Presolve removed 791 rows and 239 columns
+Presolve time: 0.05s
+Presolved: 798 rows, 401 columns, 1853 nonzeros
+Variable types: 64 continuous, 337 integer (337 binary)
+Found heuristic solution: objective 1.5101141
+
+Root relaxation: objective 1.508011e+00, 568 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    1.50801    0  284    1.51011    1.50801  0.14%     -    0s
+     0     0    1.50864    0  254    1.51011    1.50864  0.10%     -    0s
+     0     0    1.50893    0  244    1.51011    1.50893  0.08%     -    0s
+     0     0    1.50907    0  245    1.51011    1.50907  0.07%     -    0s
+     0     0    1.50911    0  251    1.51011    1.50911  0.07%     -    0s
+     0     0    1.50911    0  174    1.51011    1.50911  0.07%     -    0s
+     0     2    1.50911    0  155    1.51011    1.50911  0.07%     -    0s
+
+Cutting planes:
+  Gomory: 71
+  Cover: 65
+  Implied bound: 62
+  Clique: 182
+  MIR: 132
+
+Explored 66 nodes (3774 simplex iterations) in 0.35 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.510114085354e+00, best bound 1.510114085354e+00, gap 0.0%
+EL VALOR DE LA RUTA: 1 es 1.5101140853539612
+Este es el grafo numero 6
+Tiempo de corrida 779955.0

@@ -1,0 +1,77 @@
+Optimal solution found (tolerance 1.00e-04)
+Best objective 4.607084620791e+00, best bound 4.607084620791e+00, gap 0.0%
+Solution
+16,0
+16,1
+16,7
+16,5
+16,4
+16,8
+16,14
+16,20
+16,27
+16,25
+16,17
+16,6
+16,22
+16,3
+16,9
+16,26
+16,21
+16,23
+16,12
+16,15
+16,16
+16,10
+16,2
+16,18
+16,19
+16,13
+16,24
+16,11
+16,0
+valor de la fo: 4.6070846207910465
+[[0, 1, 7, 5, 4, 8, 14, 20, 27, 25, 17, 6, 22, 3, 9, 26, 21, 23, 12, 15, 16, 10, 2, 18, 19, 13, 24, 11, 0]]
+ Tmin: 0.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 1109 rows, 448 columns and 2554 nonzeros
+Coefficient statistics:
+  Matrix range    [2e-05, 7e+00]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 7e+00]
+  RHS range       [2e-02, 7e+00]
+Presolve removed 478 rows and 132 columns
+Presolve time: 0.02s
+Presolved: 631 rows, 316 columns, 1490 nonzeros
+Variable types: 32 continuous, 284 integer (284 binary)
+Found heuristic solution: objective 5.0125716
+
+Root relaxation: objective 4.639856e+00, 348 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    4.63986    0  226    5.01257    4.63986  7.44%     -    0s
+     0     0    4.77350    0  164    5.01257    4.77350  4.77%     -    0s
+     0     0    4.84913    0  136    5.01257    4.84913  3.26%     -    0s
+     0     0    4.89241    0  133    5.01257    4.89241  2.40%     -    0s
+     0     0    4.89513    0  136    5.01257    4.89513  2.34%     -    0s
+     0     0    4.89513    0   76    5.01257    4.89513  2.34%     -    0s
+     0     0    4.89513    0   77    5.01257    4.89513  2.34%     -    0s
+     0     0    4.98054    0   51    5.01257    4.98054  0.64%     -    0s
+     0     0     cutoff    0         5.01257    5.01257  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 18
+  Cover: 2
+  Clique: 46
+  MIR: 8
+
+Explored 0 nodes (2144 simplex iterations) in 0.17 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.012571615344e+00, best bound 5.012571615344e+00, gap 0.0%
+EL VALOR DE LA RUTA: 0 es 5.01257161534375
+Este es el grafo numero 0
+Tiempo de corrida 18562.0

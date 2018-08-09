@@ -1,0 +1,106 @@
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.060023690673e+00, best bound 3.060023690673e+00, gap 0.0%
+Solution
+16,0
+16,21
+16,17
+16,11
+16,5
+16,8
+16,10
+16,23
+16,2
+16,30
+16,14
+16,15
+16,3
+16,27
+16,22
+16,24
+16,28
+16,18
+16,12
+16,37
+16,16
+16,9
+16,13
+16,26
+16,19
+16,29
+16,32
+16,35
+16,7
+16,1
+16,6
+16,20
+16,25
+16,34
+16,55
+16,42
+16,51
+16,52
+16,54
+16,53
+16,33
+16,57
+16,31
+16,49
+16,40
+16,41
+16,36
+16,39
+16,4
+16,45
+16,46
+16,50
+16,38
+16,43
+16,47
+16,56
+16,58
+16,44
+16,48
+16,0
+valor de la fo: 3.0600236906733063
+[[0, 21, 17, 11, 5, 8, 10, 23, 2, 30, 14, 15, 3, 27, 22, 24, 28, 18, 12, 37, 16, 9, 13, 26, 19, 29, 32, 35, 7, 1, 6, 20, 25, 34, 55, 42, 51, 52, 54, 53, 33, 57, 31, 49, 40, 41, 36, 39, 4, 45, 46, 50, 38, 43, 47, 56, 58, 44, 48, 0]]
+ Tmin: 49.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 2349 rows, 944 columns and 5406 nonzeros
+Coefficient statistics:
+  Matrix range    [1e-07, 6e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 6e+01]
+  RHS range       [6e-03, 6e+01]
+Presolve removed 1389 rows and 445 columns
+Presolve time: 0.05s
+Presolved: 960 rows, 499 columns, 2214 nonzeros
+Variable types: 87 continuous, 412 integer (412 binary)
+Found heuristic solution: objective 3.0931791
+
+Root relaxation: objective 3.064416e+00, 499 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    3.06442    0  219    3.09318    3.06442  0.93%     -    0s
+     0     0    3.07525    0  220    3.09318    3.07525  0.58%     -    0s
+     0     0    3.08408    0  102    3.09318    3.08408  0.29%     -    0s
+     0     0    3.09313    0   45    3.09318    3.09313  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 21
+  Cover: 20
+  Implied bound: 38
+  Clique: 674
+  MIR: 42
+  GUB cover: 3
+  Mod-K: 1
+
+Explored 0 nodes (2243 simplex iterations) in 0.36 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.093179061493e+00, best bound 3.093133119795e+00, gap 0.0015%
+EL VALOR DE LA RUTA: 0 es 3.093179061492611
+Este es el grafo numero 7
+Tiempo de corrida 312739.0

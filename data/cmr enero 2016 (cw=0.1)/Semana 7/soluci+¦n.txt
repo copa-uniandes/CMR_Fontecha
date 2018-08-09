@@ -1,0 +1,468 @@
+Optimal solution found (tolerance 1.00e-04)
+Best objective 1.578157433188e+01, best bound 1.578157433188e+01, gap 0.0%
+Solution
+40,0
+40,122
+40,160
+40,234
+40,113
+40,180
+40,236
+40,48
+40,79
+40,235
+40,208
+40,254
+40,156
+40,93
+40,211
+40,191
+40,213
+40,187
+40,249
+40,162
+40,231
+40,204
+40,215
+40,166
+40,216
+40,140
+40,72
+40,97
+40,64
+40,24
+40,91
+40,224
+40,112
+40,13
+40,15
+40,210
+40,51
+40,88
+40,168
+40,152
+40,134
+40,71
+40,36
+40,35
+40,28
+40,42
+40,8
+40,3
+40,31
+40,58
+40,69
+40,102
+40,1
+40,5
+40,244
+40,149
+40,171
+40,176
+40,139
+40,0
+41,0
+41,68
+41,179
+41,116
+41,63
+41,80
+41,206
+41,205
+41,243
+41,246
+41,245
+41,130
+41,146
+41,157
+41,85
+41,125
+41,142
+41,230
+41,240
+41,184
+41,186
+41,252
+41,200
+41,209
+41,144
+41,126
+41,62
+41,99
+41,223
+41,192
+41,241
+41,127
+41,177
+41,167
+41,189
+41,237
+41,248
+41,228
+41,183
+41,150
+41,129
+41,131
+41,164
+41,193
+41,0
+42,0
+42,190
+42,136
+42,207
+42,194
+42,255
+42,242
+42,158
+42,118
+42,44
+42,61
+42,54
+42,114
+42,238
+42,154
+42,251
+42,201
+42,121
+42,181
+42,170
+42,66
+42,226
+42,219
+42,163
+42,86
+42,132
+42,145
+42,104
+42,107
+42,78
+42,40
+42,83
+42,41
+42,50
+42,137
+42,73
+42,105
+42,101
+42,39
+42,26
+42,65
+42,123
+42,229
+42,253
+42,232
+42,174
+42,155
+42,199
+42,202
+42,220
+42,198
+42,151
+42,214
+42,173
+42,165
+42,133
+42,60
+42,153
+42,178
+42,0
+43,0
+43,11
+43,21
+43,20
+43,23
+43,30
+43,34
+43,4
+43,100
+43,17
+43,106
+43,82
+43,143
+43,49
+43,98
+43,33
+43,12
+43,6
+43,75
+43,77
+43,128
+43,76
+43,103
+43,117
+43,9
+43,95
+43,195
+43,2
+43,7
+43,53
+43,115
+43,47
+43,67
+43,148
+43,172
+43,138
+43,119
+43,197
+43,247
+43,221
+43,203
+43,0
+44,0
+44,70
+44,52
+44,57
+44,46
+44,10
+44,14
+44,32
+44,18
+44,19
+44,22
+44,188
+44,74
+44,29
+44,25
+44,55
+44,161
+44,110
+44,147
+44,135
+44,94
+44,111
+44,43
+44,16
+44,27
+44,38
+44,45
+44,159
+44,217
+44,256
+44,56
+44,89
+44,169
+44,109
+44,124
+44,175
+44,239
+44,222
+44,233
+44,84
+44,196
+44,212
+44,120
+44,87
+44,141
+44,225
+44,218
+44,92
+44,182
+44,227
+44,257
+44,250
+44,185
+44,90
+44,81
+44,96
+44,59
+44,108
+44,37
+44,0
+valor de la fo: 15.7815743318838
+[[0, 122, 160, 234, 113, 180, 236, 48, 79, 235, 208, 254, 156, 93, 211, 191, 213, 187, 249, 162, 231, 204, 215, 166, 216, 140, 72, 97, 64, 24, 91, 224, 112, 13, 15, 210, 51, 88, 168, 152, 134, 71, 36, 35, 28, 42, 8, 3, 31, 58, 69, 102, 1, 5, 244, 149, 171, 176, 139, 0], [0, 68, 179, 116, 63, 80, 206, 205, 243, 246, 245, 130, 146, 157, 85, 125, 142, 230, 240, 184, 186, 252, 200, 209, 144, 126, 62, 99, 223, 192, 241, 127, 177, 167, 189, 237, 248, 228, 183, 150, 129, 131, 164, 193, 0], [0, 190, 136, 207, 194, 255, 242, 158, 118, 44, 61, 54, 114, 238, 154, 251, 201, 121, 181, 170, 66, 226, 219, 163, 86, 132, 145, 104, 107, 78, 40, 83, 41, 50, 137, 73, 105, 101, 39, 26, 65, 123, 229, 253, 232, 174, 155, 199, 202, 220, 198, 151, 214, 173, 165, 133, 60, 153, 178, 0], [0, 11, 21, 20, 23, 30, 34, 4, 100, 17, 106, 82, 143, 49, 98, 33, 12, 6, 75, 77, 128, 76, 103, 117, 9, 95, 195, 2, 7, 53, 115, 47, 67, 148, 172, 138, 119, 197, 247, 221, 203, 0], [0, 70, 52, 57, 46, 10, 14, 32, 18, 19, 22, 188, 74, 29, 25, 55, 161, 110, 147, 135, 94, 111, 43, 16, 27, 38, 45, 159, 217, 256, 56, 89, 169, 109, 124, 175, 239, 222, 233, 84, 196, 212, 120, 87, 141, 225, 218, 92, 182, 227, 257, 250, 185, 90, 81, 96, 59, 108, 37, 0]]
+ Tmin: 21.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 2349 rows, 944 columns and 5406 nonzeros
+Coefficient statistics:
+  Matrix range    [6e-07, 3e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 3e+01]
+  RHS range       [2e-02, 3e+01]
+Presolve removed 1437 rows and 473 columns
+Presolve time: 0.05s
+Presolved: 912 rows, 471 columns, 2118 nonzeros
+Variable types: 59 continuous, 412 integer (412 binary)
+Found heuristic solution: objective 3.4997902
+
+Root relaxation: objective 3.454429e+00, 372 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    3.45443    0  204    3.49979    3.45443  1.30%     -    0s
+     0     0    3.47141    0  176    3.49979    3.47141  0.81%     -    0s
+     0     0    3.49576    0   51    3.49979    3.49576  0.12%     -    0s
+     0     0    3.49979    0   16    3.49979    3.49979  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 7
+  Cover: 12
+  Implied bound: 11
+  Clique: 288
+  MIR: 33
+
+Explored 0 nodes (2386 simplex iterations) in 0.36 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.499790244645e+00, best bound 3.499788100421e+00, gap 0.0001%
+EL VALOR DE LA RUTA: 0 es 3.4997902446453764
+ Tmin: 21.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 1749 rows, 704 columns and 4026 nonzeros
+Coefficient statistics:
+  Matrix range    [2e-06, 3e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 3e+01]
+  RHS range       [8e-03, 3e+01]
+Presolve removed 850 rows and 253 columns
+Presolve time: 0.05s
+Presolved: 899 rows, 451 columns, 2107 nonzeros
+Variable types: 54 continuous, 397 integer (397 binary)
+Found heuristic solution: objective 2.7722945
+
+Root relaxation: objective 2.741712e+00, 511 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    2.74171    0  304    2.77229    2.74171  1.10%     -    0s
+     0     0    2.74904    0  282    2.77229    2.74904  0.84%     -    0s
+     0     0    2.75327    0  297    2.77229    2.75327  0.69%     -    0s
+     0     0    2.75486    0  301    2.77229    2.75486  0.63%     -    0s
+     0     0    2.75512    0  305    2.77229    2.75512  0.62%     -    0s
+     0     0    2.75512    0  240    2.77229    2.75512  0.62%     -    0s
+     0     2    2.75512    0  240    2.77229    2.75512  0.62%     -    0s
+
+Cutting planes:
+  Gomory: 46
+  Cover: 4
+  Implied bound: 4
+  Clique: 57
+  MIR: 119
+
+Explored 57 nodes (3705 simplex iterations) in 0.34 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.772294542194e+00, best bound 2.772294542194e+00, gap 0.0%
+EL VALOR DE LA RUTA: 1 es 2.7722945421943126
+ Tmin: 21.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 2349 rows, 944 columns and 5406 nonzeros
+Coefficient statistics:
+  Matrix range    [2e-06, 3e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 3e+01]
+  RHS range       [2e-02, 3e+01]
+Presolve removed 1364 rows and 437 columns
+Presolve time: 0.05s
+Presolved: 985 rows, 507 columns, 2300 nonzeros
+Variable types: 59 continuous, 448 integer (448 binary)
+Found heuristic solution: objective 3.6595997
+
+Root relaxation: objective 3.606518e+00, 438 iterations, 0.02 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    3.60652    0  246    3.65960    3.60652  1.45%     -    0s
+     0     0    3.62220    0  235    3.65960    3.62220  1.02%     -    0s
+     0     0    3.65485    0   66    3.65960    3.65485  0.13%     -    0s
+     0     0    3.65957    0  108    3.65960    3.65957  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 6
+  Cover: 14
+  Implied bound: 46
+  Clique: 467
+  MIR: 33
+  GUB cover: 10
+
+Explored 0 nodes (2617 simplex iterations) in 0.44 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.659599667489e+00, best bound 3.659574410449e+00, gap 0.0007%
+EL VALOR DE LA RUTA: 2 es 3.6595996674889135
+ Tmin: 21.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 1629 rows, 656 columns and 3750 nonzeros
+Coefficient statistics:
+  Matrix range    [8e-07, 3e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 3e+01]
+  RHS range       [2e-02, 3e+01]
+Presolve removed 875 rows and 277 columns
+Presolve time: 0.05s
+Presolved: 754 rows, 379 columns, 1751 nonzeros
+Variable types: 54 continuous, 325 integer (325 binary)
+Found heuristic solution: objective 2.5121180
+
+Root relaxation: objective 2.485014e+00, 427 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    2.48501    0  274    2.51212    2.48501  1.08%     -    0s
+     0     0    2.49270    0  277    2.51212    2.49270  0.77%     -    0s
+     0     0    2.49735    0  251    2.51212    2.49735  0.59%     -    0s
+     0     0    2.49851    0  234    2.51212    2.49851  0.54%     -    0s
+     0     0    2.49884    0  234    2.51212    2.49884  0.53%     -    0s
+     0     0    2.49884    0  138    2.51212    2.49884  0.53%     -    0s
+     0     2    2.49884    0  121    2.51212    2.49884  0.53%     -    0s
+
+Cutting planes:
+  Gomory: 93
+  Cover: 22
+  Implied bound: 30
+  Clique: 104
+  MIR: 72
+
+Explored 100 nodes (3040 simplex iterations) in 0.33 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.512117960538e+00, best bound 2.512117960538e+00, gap 0.0%
+EL VALOR DE LA RUTA: 3 es 2.5121179605380233
+ Tmin: 21.0
+Warning: constraint name "Intervalo l_h10_0" has a space
+Optimize a model with 2349 rows, 944 columns and 5406 nonzeros
+Coefficient statistics:
+  Matrix range    [2e-06, 3e+01]
+  Objective range [1e+00, 1e+00]
+  Bounds range    [1e+00, 3e+01]
+  RHS range       [1e-02, 3e+01]
+Presolve removed 1365 rows and 436 columns
+Presolve time: 0.05s
+Presolved: 984 rows, 508 columns, 2299 nonzeros
+Variable types: 59 continuous, 449 integer (449 binary)
+Found heuristic solution: objective 3.6145627
+
+Root relaxation: objective 3.477711e+00, 424 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0    3.47771    0  223    3.61456    3.47771  3.79%     -    0s
+H    0     0                       3.5272770    3.47771  1.41%     -    0s
+     0     0    3.49224    0  232    3.52728    3.49224  0.99%     -    0s
+     0     0    3.52065    0   66    3.52728    3.52065  0.19%     -    0s
+     0     0    3.52728    0   48    3.52728    3.52728  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 12
+  Cover: 16
+  Implied bound: 35
+  Clique: 744
+  MIR: 26
+  GUB cover: 7
+
+Explored 0 nodes (2570 simplex iterations) in 0.41 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.527276951765e+00, best bound 3.527276048303e+00, gap 0.0000%
+EL VALOR DE LA RUTA: 4 es 3.527276951764873
+Este es el grafo numero 3
+Tiempo de corrida 5083068.0
