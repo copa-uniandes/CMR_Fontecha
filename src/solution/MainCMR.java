@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,8 +80,10 @@ public class MainCMR {
 	/**
 	 * Main
 	 * @param args
+	 * @throws UnsupportedEncodingException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		/*
 		 * Parámetro para tomar el tiempo computacional del Maintenanance
 		 */
@@ -212,7 +215,7 @@ public class MainCMR {
 //									System.out.println(smallgraphs.get(p).getNodes().get(pp).getId1()+" "+smallgraphs.get(p).getNodes().get(pp).getId2()+" "+smallgraphs.get(p).getNodes().get(pp).getId3());
 //								}
 		}
-
+		
 				System.out.println("Tmin \t Tmax \t");
 		timeMaintenance=System.currentTimeMillis()-timeMaintenance;
 		timeRouting=System.currentTimeMillis();	
@@ -221,7 +224,7 @@ public class MainCMR {
 		ArrayList<ArrayList<ArrayList<Double>>> horas_todas = new ArrayList<ArrayList<ArrayList<Double>>>();
 		int cualvoy=0;
 		//Esté es el codigo para ejecutar cada semana
-		for (int i = cualvoy; i<1*(smallgraphs.size()-1);i++){
+		for (int i = cualvoy; i<1*(smallgraphs.size());i++){
 			System.out.println("======================================================================================================================================================================");
 			System.out.println("Ruteando semana "+i);
 			System.out.println("======================================================================================================================================================================");
@@ -264,7 +267,7 @@ public class MainCMR {
 			horas_todas.add(horas);
 			
 			
-			ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas_backup = new ArrayList<ArrayList<ArrayList<Tres>>>(rutas_todas);
+			//ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas_backup = new ArrayList<ArrayList<ArrayList<Tres>>>(rutas_todas);
 			//rutas_todas_backup = rutas_todas;
 			
 			//Ya con el split se debe correr la simulación.
@@ -318,136 +321,8 @@ public class MainCMR {
 		}  // Acá acaba el for de las semanas
 		
 		
-		System.out.println(gmm.getNodes().size());
-		//for (int i = 0; i < gmm.getNodes().size(); i++) {
-		//	System.out.println("ID: "+gmm.getNodes().get(i).getId());
-		//}
-		
-		double main_cost[] = new double[3];
-		//double total_cost[] = new double [3];
-		for (int i = 0; i < 10000; i++) {
-			
-			Random RNG = new Random(10*i);
-			System.out.println("iteracion "+i);
+		DynamicSimulation hola = new DynamicSimulation(gmm, smallgraphs, rutas_todas, horas_todas, VEL, 10000);
 				
-			// Genero la siguiente falla
-			double NextFailure[] = new double[gmm.getNodes().size()];
-			for (int k = 0; k < gmm.getNodes().size(); k++) {
-				NextFailure[k] = smallgraphs.get(0).getTmin() + gmm.getNodes().get(k).getD().inverseF(RNG.nextDouble());
-			}
-			
-			// El orden de los eventos de falla
-			double sortedFailures[] = NextFailure;
-			Arrays.sort(sortedFailures);
-			Arrays.asList(NextFailure).indexOf(sortedFailures[0]); // el nodo de la siguiente falla
-			
-			// La fila de las fallas y los tiempos de fallas
-			ArrayList<Integer> fallas = new ArrayList<Integer>();
-			ArrayList<Double> tiempo_fallas = new ArrayList<Double>();
-			
-			//Este loop revisa cada semana
-			for (int j = 0; j < smallgraphs.size(); j++) {
-				System.out.println("Semana "+j);
-				ArrayList<MNode> sitios = new ArrayList<MNode>(gmm.getNodes());
-				double[] ultimo_t = new double[rutas_todas.get(j).size()];
-				double[] sorted_ultima = new double[rutas_todas.get(j).size()];
-				
-				//System.out.println("Numero de rutas de la semana: "+ rutas_todas.get(j).size());
-				for (int k = 0; k < rutas_todas.get(j).size(); k++) { //Voy a revisar todas las rutas de la semana j
-					//System.out.println("Tamaño de las rutas: " + rutas_todas.get(j).get(k).size());
-					for (int k2 = 0; k2 < rutas_todas.get(j).get(k).size(); k2++) { //Voy a revisar cada visita de cada ruta k de la semana j
-						if(rutas_todas.get(j).get(k).get(k2).getEventsSitesID() != 0){
-							if (NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] < horas_todas.get(j).get(k).get(k2) ) { //Si el sitio falló antes de ser reparado
-								main_cost[i] = main_cost[i] + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw()*( horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] );
-							}
-							NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
-							//System.out.println(rutas_todas.get(j).get(k).get(k2).getEventsSitesID());
-							for (int l = 0; l < sitios.size(); l++) {
-								if (sitios.get(l).getId() == rutas_todas.get(j).get(k).get(k2).getEventsSitesID()) {
-									sitios.remove(l);
-								}
-							}
-						}					
-					}
-					ultimo_t[k] = horas_todas.get(j).get(k).get(horas_todas.get(j).get(k).size()-1);
-					sorted_ultima = ultimo_t; 
-					Arrays.sort(sorted_ultima);
-				}
-				
-			
-				// Reviso si los sitios que no visité fallaron esa semana
-				for (int k = 0; k < sitios.size(); k++) {
-					//System.out.println("Sitio "+sitios.get(k).getId()+", Tmin: "+smallgraphs.get(0).getTmin()+", T_Falla: " + NextFailure[sitios.get(k).getId()-1]);
-					if (NextFailure[sitios.get(k).getId()-1] < smallgraphs.get(j).getTmax()) {
-						// TO DO
-						// Pegarlo a una ruta actual, calcular el costo y el tiempo en el que lo visita
-						//Organizarlos FIFO, barriendo en las rutas cuál llegaría más temprano
-						fallas.add(sitios.get(k).getId());
-						tiempo_fallas.add(NextFailure[sitios.get(k).getId()]);
-						// Actualizar el tiempo de falla
-						//NextFailure[sitios.get(k).getId()] =  gmm.getNodes().get(sitios.get(k).getId()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
-						
-						// Actualizar las semanas siguientes
-						
-						// i. Quitarla de donde está
-						
-						// ii. Agregar las nuevas visitas	
-					}
-				}
-				System.out.println("En la semana "+j+" hay "+fallas.size()+" fallas");
-				
-				ArrayList<Double> s_tiempo_fallas = new ArrayList<Double>();
-				s_tiempo_fallas = tiempo_fallas;
-				Collections.sort(s_tiempo_fallas);
-				boolean continuar = !fallas.isEmpty();
-								
-				while(continuar){ 
-					
-					// la ruta a la que le voy a pegar a algo
-					int ruta_mod = indexOfArray(ultimo_t, sorted_ultima[0]);
-									
-					// el momento en el que se hace la última visita
-					double tiempo_ultima = sorted_ultima[0];
-					
-					// El tiempo de viaje a la nueva visita con la distancia del taxista
-					double deltaX = gmm.getNodes().get(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getPosx() - gmm.getNodes().get(rutas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getPosx();
-					double deltaY = gmm.getNodes().get(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getPosy() - gmm.getNodes().get(rutas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getPosy();
-		
-					double travel_time = (Math.abs(deltaX) + Math.abs(deltaY)) / VEL;
-					
-					
-					if (tiempo_ultima + travel_time < smallgraphs.get(j).getTmax()) { // alcanzo a visitarla dentro de la semana?
-						Tres nueva = new Tres(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))),fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))), s_tiempo_fallas.get(0) );
-						rutas_todas.get(j).get(ruta_mod).add(nueva);
-						horas_todas.get(j).get(ruta_mod).add(tiempo_ultima + travel_time);
-						main_cost[i] = main_cost[i] + gmm.getNodes().get(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCw()*( horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()] );
-						NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1] = horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) + gmm.getNodes().get(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
-						
-						// La saco de las fallas y tiempo de fallas
-						fallas.remove(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)));
-						tiempo_fallas.remove(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)));
-						//s_tiempo_fallas.remove(0);
-						
-						//Actualizo la ultima visita
-						ultimo_t[ruta_mod] = horas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1);
-						sorted_ultima = ultimo_t; 
-						Arrays.sort(sorted_ultima);
-											
-					}else{
-						continuar = false;
-					}
-					
-					if(fallas.isEmpty()){
-						continuar = false;
-					}
-				}
-				
-			}
-			
-		}
-		
-		
-		
 		// Esto es de John
 		timeSimulation=System.currentTimeMillis()-timeSimulation;
 		timeTotal=System.currentTimeMillis()-timeTotal;
