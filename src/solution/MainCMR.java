@@ -322,7 +322,7 @@ public class MainCMR {
 		
 		
 		DynamicSimulation hola = new DynamicSimulation(gmm, smallgraphs, rutas_todas, horas_todas, VEL, 10000);
-				
+		System.out.println("acabo la simulación");	
 		// Esto es de John
 		timeSimulation=System.currentTimeMillis()-timeSimulation;
 		timeTotal=System.currentTimeMillis()-timeTotal;

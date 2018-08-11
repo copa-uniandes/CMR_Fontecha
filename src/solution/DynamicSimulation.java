@@ -39,7 +39,7 @@ public class DynamicSimulation {
 			}
 			
 		}
-				
+		System.out.println("Empezando la simulación");		
 		int[] cycletimes = getCycles(smallgraphs, gmm);
 		
 		double main_cost[] = new double[iteraciones];
