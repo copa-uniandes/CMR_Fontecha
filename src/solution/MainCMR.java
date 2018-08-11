@@ -358,9 +358,9 @@ public class MainCMR {
 					for (int k2 = 0; k2 < rutas_todas.get(j).get(k).size(); k2++) { //Voy a revisar cada visita de cada ruta k de la semana j
 						if(rutas_todas.get(j).get(k).get(k2).getEventsSitesID() != 0){
 							if (NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] < horas_todas.get(j).get(k).get(k2) ) { //Si el sitio falló antes de ser reparado
-								main_cost[i] = main_cost[i] + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw()*( horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()] );
+								main_cost[i] = main_cost[i] + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw()*( horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] );
 							}
-							NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
+							NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
 							//System.out.println(rutas_todas.get(j).get(k).get(k2).getEventsSitesID());
 							for (int l = 0; l < sitios.size(); l++) {
 								if (sitios.get(l).getId() == rutas_todas.get(j).get(k).get(k2).getEventsSitesID()) {
