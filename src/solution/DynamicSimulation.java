@@ -14,10 +14,8 @@ import maintenancer.Tres;
 import router.RGraph;
 
 public class DynamicSimulation {
-	
-	
-	public DynamicSimulation(MGraph gmm, ArrayList<RGraph> smallgraphs, ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas2, ArrayList<ArrayList<ArrayList<Double>>> horas_todas2, double VEL, int iteraciones) throws FileNotFoundException, UnsupportedEncodingException{
-		
+
+	public DynamicSimulation(RGraph gvrp, MGraph gmm, ArrayList<RGraph> smallgraphs, ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas2, ArrayList<ArrayList<ArrayList<Double>>> horas_todas2, double VEL, int iteraciones) throws FileNotFoundException, UnsupportedEncodingException{
 		PrintWriter writer = new PrintWriter("Dynamic_costs.txt", "UTF-8");
 		PrintWriter writer2 = new PrintWriter("Dynamic_routes.txt", "UTF-8");
 		System.out.println(gmm.getNodes().size());
@@ -39,9 +37,9 @@ public class DynamicSimulation {
 			}
 			
 		}
-		System.out.println("Empezando la simulación");		
-		int[] cycletimes = getCycles(smallgraphs, gmm);
-		
+		System.out.println("termino de imprimir rutas normales");
+		int[] cycletimes = getCycles(smallgraphs, gmm,gvrp);
+		System.out.println("Salio de getcycles");
 		double main_cost[] = new double[iteraciones];
 		//double total_cost[] = new double [3];
 		for (int i = 0; i < iteraciones; i++) {
@@ -244,21 +242,31 @@ public class DynamicSimulation {
 	    return returnvalue;
 	}
 	
-	public int[] getCycles(ArrayList<RGraph> smallgraphs, MGraph gmm){
+	public int[] getCycles(ArrayList<RGraph> smallgraphs, MGraph gmm,RGraph gvrp){
 		int[] cycles = new int[gmm.getNodes().size()];
-		
+		System.out.println("Va a entrar al ciclo");
 		for (int i = 0; i < cycles.length; i++) {
-			boolean continuar = true;
-			while(continuar){
-				for(int j = 0; j < smallgraphs.get(i).getNodes().size();j++){
-					if(smallgraphs.get(i).getNodes().get(j).getId1() == (j+1)){
-						cycles[i] = (int) (smallgraphs.get(i).getNodes().get(j).getCycletime()/7);
-						continuar = false;
+			for(int j = 0; j < gvrp.getNodes().size();j++){
+					if(gvrp.getNodes().get(j).getId1() == (i+1)){
+						cycles[i] = (int) (gvrp.getNodes().get(j).getCycletime()/7);
+						break;
 					}
 				}
 			}
-			
-		}
+		
+//		System.out.println("Va a entrar al ciclo");
+//		for (int i = 0; i < cycles.length; i++) {
+//			boolean continuar = true;
+//			while(continuar){
+//				for(int j = 0; j < smallgraphs.get(i).getNodes().size();j++){
+//					if(smallgraphs.get(i).getNodes().get(j).getId1() == (j+1)){
+//						cycles[i] = (int) (smallgraphs.get(i).getNodes().get(j).getCycletime()/7);
+//						continuar = false;
+//					}
+//				}
+//			}
+//			
+//		}
 		
 		
 		return cycles;

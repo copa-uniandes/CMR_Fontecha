@@ -61,7 +61,7 @@ public class RgvrpExecution {
 		RGraph gvrp=new RGraph(); 
 		System.out.println(ns.length);
 		MM m=new MM(gmm,T,ns[0],ns[1],npieces,nouts);
-//		System.out.println("ya acabo");
+		System.out.println("ya acabo m");
 		gvrp=m.getGvrp();
 		return gvrp;
 	}

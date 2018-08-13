@@ -64,11 +64,11 @@ public class GRASP
 		}		
 	}
 	
-	private void localSearch() 
+	private void localSearch(int deep) 
 	{
 		boolean condicion=true;
 		int numeroiteraciones=0;
-		while (condicion && numeroiteraciones<1000) 
+		while (condicion && numeroiteraciones<deep)// 
 		{
 			numeroiteraciones=numeroiteraciones+1;
 			twoOptGR.excecute(actualTSP);
@@ -101,7 +101,7 @@ public class GRASP
 	 * 
 	 * @param rutaInicial es un TSP
 	 */
-	public void excecute (ArrayList<Integer> rutaInicial)
+	public void excecute (ArrayList<Integer> rutaInicial,int dd,int deep)
 	{
 		rutas = new ArrayList<Rutas>();
 //		System.out.println("Tamaño ruta inicial "+rutaInicial.size());
@@ -110,10 +110,10 @@ public class GRASP
 //		System.out.println("Ruta inicial "+rutaInicial.size());
 		
 		//para qué es este for?
-		for (int d = 0; d<0; d++) 
+		for (int d = 0; d<dd; d++) 
 		{
 			aleatorizarSlnActual();
-			localSearch();
+			localSearch(deep);
 			Rutas lasRutas = splitGR.excecute(actualTSP);
 			actualFO=splitGR.getFO();
 			

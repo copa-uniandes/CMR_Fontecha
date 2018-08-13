@@ -1,17 +1,16 @@
 package maintenancer;
 
 import gurobi.GRB;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import router.RGraph;
 import umontreal.iro.lecuyer.rng.MRG32k3a;
 
 public class Simulator {
 	static PrintWriter writer;
+	private static PrintWriter writer3;
 	/**
 	 * Number of replicas of the simulations
 	 */
@@ -21,7 +20,8 @@ public class Simulator {
 	 * 	Graphs and input data
 	 */
 	private MGraph siteGraph;
-	private RGraph operationsGraph;
+//	private RGraph operationsGraph;
+	private int operationsGraph;
 	/**
 	 * Times of the maintenance operations (sorted in increasing order) (s_i)
 	 */
@@ -47,6 +47,8 @@ public class Simulator {
 	 * Cost of the routing policy for each replica.
 	 */
 	private double[] replicaCosts;	
+	private double[] replicanoattention;
+	private double[] replicafallas;
 	/**
 	 * Random [0,1] generator. Used to generate random variables realizations.
 	 */
@@ -65,21 +67,22 @@ public class Simulator {
 	 * @param nInput
 	 *            input data
 	 */
-	public Simulator(String nombre,Route routes, MGraph g, RGraph g_prime){
+	public Simulator(String nombre,Route routes, MGraph g, int g_prime,double simuZero){
+		
 		rndGenerator = new MRG32k3a();
-//		long[]seeed= new long[6];
-//		seeed[0]=12345L;
-//		seeed[1]=13456L;
-//		seeed[2]=12345L;
-//		seeed[3]=13456L;
-//		seeed[4]=12355L;
-//		seeed[5]=13476L;
-//		rndGenerator.setSeed(seeed);
+		long[]seeed= new long[6];
+		seeed[0]=12345L;
+		seeed[1]=13456L;
+		seeed[2]=12345L;
+		seeed[3]=13456L;
+		seeed[4]=12355L;
+		seeed[5]=13476L;
+		rndGenerator.setSeed(seeed);
 		siteGraph = g;
-//		System.out.println(g.getNodes().size());
+//		System.out.println("g"+g.getNodes().size());
 		operationsGraph = g_prime;
-//		System.out.println(g_prime.getNodes().size());
-		inicializedEvents(routes);
+//		System.out.println("g_prime"+g_prime.getNodes().size());
+		inicializedEvents(routes,simuZero);
 		simulate(nombre);
 	}
 
@@ -90,24 +93,30 @@ public class Simulator {
 	 */
 	private void simulate(String nombre) {
 		replicaCosts = new double[replicas];
+		replicanoattention = new double[replicas];
+		replicafallas = new double[replicas];
 		
 		double replicaCost,expectedCost = 0;
+		double replicaAttention,noattention = 0;
+		double replicafalla,falla = 0;
 		double waiting = 0;
 		
 		//Run all replicas
 		for (int i = 0; i < replicas; i++) {
 			replicaCost = 0;
+			replicaAttention = 0;
+			replicafalla=0;
 			nextFail = new double[siteGraph.getNodes().size()];
 			nextFailId = new int[siteGraph.getNodes().size()];
 			scheduleFirstFail();
 			lastVisit = new double[siteGraph.getNodes().size()];
 			double TNOW = 0; 
-			int operation = 0;
+//			int operation = 0;
 			int site = 0; 
 			// Evaluate the events calendar. 
 			for (int j = 0; j < eventsTimes.length; j++) {
 				TNOW = eventsTimes[j];
-				operation = eventsOperationsID[j];
+//				operation = eventsOperationsID[j];
 				
 				site = eventsSitesID[j];
 				for (int p=0;p<nextFail.length;p++){
@@ -125,22 +134,48 @@ public class Simulator {
 					waiting =TNOW-nextFail[site];
 					if(waiting<0){System.err.println("Error en waiting! Simulación");}
 					replicaCost+= siteGraph.getNodes().get(site).getCcm()+siteGraph.getNodes().get(site).getCw()*waiting;
+					replicaAttention+=waiting;
+					replicafalla+=1;
 					lastVisit[site] = TNOW + siteGraph.getNodes().get(site).getCpm();
 				}
 				scheduleNextFail(site);
 			}
 			replicaCosts[i] = replicaCost;
+			replicanoattention[i] = replicaAttention;
+			replicafallas[i]=replicafalla;
 			expectedCost+=replicaCost;
+			noattention+=replicaAttention;
+			falla+=replicafalla;
+			
+			
 		}
-		
-		System.out.println(nombre+" Total expected cost: " + (expectedCost/replicas));
+//		System.out.println("falla: "+falla);
 		
 		String rutaF = "./data/";
-		String nombreF = nombre;
 		File directorioFacturas = new File(rutaF);
 		if(!directorioFacturas.exists())
 			directorioFacturas.mkdirs();
-		File file = new File(rutaF+nombreF);
+		File file3 = new File(rutaF+"Simulacion"+".dat");
+		try {
+			writer3 = new PrintWriter(new FileWriter(file3,true));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		writer3.println(nombre+" Total expected cost: " + (expectedCost/replicas));
+		writer3.println(nombre+" Average cost per programmed operation: " + ((expectedCost/replicas)/operationsGraph));
+		writer3.println(nombre+" Average waiting time per programmed operation: " + ((noattention/replicas)/operationsGraph));
+		writer3.println(nombre+" Average number of failures: " + (falla/replicas));	
+		writer3.close();
+		
+		System.out.println(nombre+" Total expected cost: " + (expectedCost/replicas));
+		System.out.println(nombre+" Average cost per programmed operation: " + ((expectedCost/replicas)/operationsGraph));
+		System.out.println(nombre+" Average waiting time per programmed operation: " + ((noattention/replicas)/operationsGraph));
+		System.out.println(nombre+" Average number of failures: " + (falla/replicas));
+		
+		String nombreF = nombre;
+		File file = new File(rutaF+nombreF+".dat");
 		try {
 			writer = new PrintWriter(new FileWriter(file,true));
 		} catch (IOException e) {
@@ -148,12 +183,12 @@ public class Simulator {
 			e.printStackTrace();
 		}
 		
+		writer.println("cost"+" "+"no_attention"+" "+"#_fallas");
 		for(int i=0;i<replicaCosts.length;i++){
-			writer.println(replicaCosts[i]);
+			writer.println(replicaCosts[i]+" "+replicanoattention[i]+" "+replicafallas[i]);
 		}
 		writer.close();
 	}
-
 	/**
 	 * Before starting the simulation, the first fail should be programmed in
 	 * the simulation calendar.
@@ -166,8 +201,7 @@ public class Simulator {
 			nextFail[i] = siteGraph.getNodes().get(i).getD().inverseF(rndNumber);
 			nextFailId[i]=siteGraph.getNodes().get(i).getId();
 		}
-	}
-	
+	}	
 	/**
 	 * Schedules a fail in the simulation calendar for the site given as a
 	 * parameter Precondition: LastVisit[site] should be updated before calling
@@ -187,15 +221,15 @@ public class Simulator {
 	 * @param routes
 	 *            data structure that contains the routes.
 	 */
-	private void inicializedEvents(Route routes) {
-		eventsOperationsID = new int[operationsGraph.getNodes().size()-1];
-		eventsSitesID = new int[operationsGraph.getNodes().size()-1];
-		eventsTimes = new double[operationsGraph.getNodes().size()-1];
-//		System.out.println("Tamaño: "+operationsGraph.getNodes().size()-1);
+	private void inicializedEvents(Route routes, double simuZero) {
+		eventsOperationsID = new int[operationsGraph];
+		eventsSitesID = new int[operationsGraph];
+		eventsTimes = new double[operationsGraph];
+		System.out.println("Tamaño: "+(operationsGraph));
 		for(int i=0;i<eventsTimes.length;i++){
 			eventsOperationsID[i]=routes.getRoute().get(i).getEventsOperationsID();
 			eventsSitesID[i]=routes.getRoute().get(i).getEventsSitesID();
-			eventsTimes[i]=routes.getRoute().get(i).getEventTimes();
+			eventsTimes[i]=routes.getRoute().get(i).getEventTimes()-simuZero;
 		}
 		
 		

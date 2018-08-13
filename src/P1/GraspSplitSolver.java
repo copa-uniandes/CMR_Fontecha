@@ -33,7 +33,7 @@ public class GraspSplitSolver {
 	
 	private ArrayList<Route> rutascompletasTres=new ArrayList<Route>();
 	
-	public void solve(MGraph mmgr, RGraph rGraph, double Tmin, double Tmax, String MIPshifts, int rutasdisponibles, String eduindata) {
+	public void solve(String Nombre,MGraph mmgr, RGraph rGraph, double Tmin, double Tmax, String MIPshifts, int rutasdisponibles, String eduindata,int dd,int deep) {
 		DataHandler data = new DataHandler(mmgr,rGraph, Tmin, Tmax, MIPshifts, eduindata); 
 		ClarkeWright cw = new ClarkeWright(data);
 		Split splitter = new Split(data);
@@ -46,24 +46,24 @@ public class GraspSplitSolver {
 
 		System.out.println("ROUND 1");
 		cw.executeCW();
-		grasp.excecute(cw.vectRes);
+		grasp.excecute(cw.vectRes,dd,deep);
 		soluciones.addSolutions(grasp.rutas);
 		
 		System.out.println("ROUND 2");
 		VMC.excecute();
-		grasp.excecute(VMC.vectRes);
+		grasp.excecute(VMC.vectRes,dd,deep);
 		soluciones.addSolutions(grasp.rutas);
 		
 		System.out.println("ROUND 3");
 		rutaAle.excecute();
-		grasp.excecute(rutaAle.vectRes);
+		grasp.excecute(rutaAle.vectRes,dd,deep);
 		soluciones.addSolutions(grasp.rutas);
 		
 //		System.out.println("Estoy en graspsplitsolver, el número de rutas factibles es: "+grasp.getRutasfactibles().size());
 		
-		setCov = new SetCovering(data, grasp.getRutasfactibles(),rutasdisponibles);
+		setCov = new SetCovering(Nombre,data, grasp.getRutasfactibles(),rutasdisponibles);
 		try {
-			setCov.excecute();
+			setCov.excecute(Nombre);
 			rutascompletasTres=setCov.getRutascompletasTres();
 		} catch (GRBException e) {
 			// TODO Auto-generated catch block

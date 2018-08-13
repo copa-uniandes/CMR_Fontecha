@@ -1,8 +1,11 @@
 package P1;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import maintenancer.MNode;
 import maintenancer.Maintenance;
 import maintenancer.Route;
@@ -21,7 +24,7 @@ public class SetCovering
 {
 	public DataHandler data;
 	public ArrayList<FeasibleRoute> soluciones;
-
+	static PrintWriter writer;
 	public GRBEnv env;
 	public GRBModel modelo1;
 	public GRBModel modelo2;
@@ -32,7 +35,7 @@ public class SetCovering
 	private ArrayList<Route> rutascompletasTres=new ArrayList<Route>();
 	private int rutasdisponibles; 
 
-	public SetCovering (DataHandler nData,  ArrayList<FeasibleRoute> nSoluciones, int numerorutas)
+	public SetCovering (String Nombre,DataHandler nData,  ArrayList<FeasibleRoute> nSoluciones, int numerorutas)
 	{
 		data = nData;
 		setSoluciones(nSoluciones);
@@ -100,12 +103,28 @@ public class SetCovering
 		}
 	}
 
-	public void solveSetCovering () throws GRBException
+	public void solveSetCovering (String Nombre) throws GRBException
 	{
+
+
 		System.out.println("Optimizing MODEL 1");
 		modelo1.set(GRB.IntAttr.ModelSense, GRB.MINIMIZE);
 		modelo1.write("Setcovering.lp");
 		modelo1.optimize();
+
+
+		String rutaF = "./data/";
+		File directorioFacturas = new File(rutaF);
+		if(!directorioFacturas.exists())
+			directorioFacturas.mkdirs();
+		File file = new File(rutaF+Nombre+".dat");
+		System.out.println(rutaF+Nombre+".dat");
+		try {
+			writer = new PrintWriter(new FileWriter(file,true));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if(modelo1.get(GRB.IntAttr.Status)==GRB.OPTIMAL){
 			Route rutainfoTres;
@@ -117,7 +136,8 @@ public class SetCovering
 				if(x[i].get(GRB.DoubleAttr.X)==1){
 					System.out.println("i: "+i+"cost: "+soluciones.get(i).getRoutecost());
 					Route solution=new Route();
-					System.out.println("id1"+"\t"+"id3"+" \t "+"s"+" \t "+"delta*"+" \t "+"gap"+" "+"real cost");
+					System.out.println("id1"+"\t"+"id3"+" \t "+"s"+" \t "+"delta*"+" \t "+"gap"+" "+"real_cost"+" "+"gap_cycletime");
+					writer.println("id1"+"\t"+"id3"+" \t "+"s"+" \t "+"delta*"+" \t "+"gap"+" "+"real_cost"+" "+"gap_cycletime");
 					for(int k =0;k<soluciones.get(i).getPath().size();k++){
 						for(int l=0;l<data.getGraph().getNodes().size();l++){
 							if(soluciones.get(i).getPath().get(k)==data.getGraph().getNodes().get(l).getId3()){
@@ -125,24 +145,43 @@ public class SetCovering
 							}
 						}
 						Tres nuevoTres=new Tres(id1,soluciones.get(i).getPath().get(k),soluciones.get(i).getS().get(k));
+						//						System.out.println("Estoy en setcovering: "+id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k));
 						solution.addTres(nuevoTres);
 						double punto=0;
 						MNode nodobuscado = null;
 						double gap=0;
+						double gap1=0;
 						for(int h=0; h<data.getMGraph().getNodes().size();h++){
 							if(data.getMGraph().getNodes().get(h).getId()==id1){//+data.getMGraph().getNodes().get(h).getOpt()+      -(data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt())
 								nodobuscado=data.getMGraph().getNodes().get(h);
 								gap=Math.abs(soluciones.get(i).getS().get(k)-(data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()))/data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt();
+								gap1=Math.abs(soluciones.get(i).getS().get(k)-(data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()))/data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getCycletime();
+								
 								punto=data.getMGraph().getNodes().get(h).getOpt()+(soluciones.get(i).getS().get(k)-(data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()));
+								if(punto<=0) {
+									System.out.println("Juemadre!!!!!!!!!!!!!!!!!!!!!!!!!!"+punto+" "+data.getMGraph().getNodes().get(h).getOpt()+" "+soluciones.get(i).getS().get(k)+" "+data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt());
+								}
 								break;
 							}
 						}
 
 						//						System.out.println("Este es el punto: "+punto);
 						if(id1==0){
-							System.out.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+0);
+							System.out.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+0+" "+0+" "+0);
+							writer.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+0+" "+0+" "+0);
+
+
 						}else{
-							System.out.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()+" "+gap+" "+Maintenance.cost(nodobuscado, punto));//+" "+Maintenance.cost(nodobuscado, punto));
+							double mycosto=0;
+							if(punto>0) {
+								mycosto=Maintenance.cost(nodobuscado, punto);
+							} else {
+								mycosto=200;
+							}
+						
+							
+							System.out.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()+" "+gap+" "+mycosto+" "+gap1);//+" "+Maintenance.cost(nodobuscado, punto));
+							writer.println(id1+" "+soluciones.get(i).getPath().get(k)+" "+soluciones.get(i).getS().get(k)+" "+data.getGraph().getNodes().get(soluciones.get(i).getPath().get(k)).getOpt()+" "+gap+" "+mycosto+" "+gap1);
 						}
 					}
 					rutascompletasTres.add(solution);
@@ -153,7 +192,8 @@ public class SetCovering
 			//	routeFeasibility= false;
 			//	routeCost = Double.POSITIVE_INFINITY;
 		}
-
+		writer.println("Routing_cost: "+modelo1.get(GRB.DoubleAttr.ObjVal));
+		writer.close();
 		int probStatus = modelo1.get(GRB.IntAttr.Status);
 		FO1= 0;
 		if(probStatus!= GRB.INFEASIBLE)
@@ -166,10 +206,10 @@ public class SetCovering
 
 	}
 
-	public void excecute() throws GRBException 
+	public void excecute(String Nombre) throws GRBException 
 	{
 		initializeMP();
-		solveSetCovering();
+		solveSetCovering(Nombre);
 	}
 
 

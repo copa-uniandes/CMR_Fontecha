@@ -63,7 +63,7 @@ public class MM {
 		for(int i=0;i<nodes.size();i++){
 			c= new Maintenance(nodes.get(i),horizon,npiece,nouts);
 			nodes.get(i).setOptcost(Maintenance.cost(nodes.get(i), c.getOpt()));
-//			System.out.println(nodes.get(i).getId()+" "+c.getOpt()+" "+nodes.get(i).getOptcost());
+			System.out.println(nodes.get(i).getId()+" "+c.getOpt()+" "+nodes.get(i).getOptcost());
 			nodes.get(i).setOpt(c.getOpt());
 			for(int j=0; j<c.getNum();j++){
 				l=c.getL()+j*c.getTimecycle();
