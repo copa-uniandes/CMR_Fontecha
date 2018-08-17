@@ -1,4 +1,8 @@
-John_EAB Total expected cost: 4116.477554376082
-John_EAB Average cost per programmed operation: 1.9199988593172022
-John_EAB Average waiting time per programmed operation: 7.176329771069876
-John_EAB Average number of failures: 802.2796
+John_EAB Total expected cost: 5178.193006537969
+John_EAB Average cost per programmed operation: 1.8979491087962763
+John_EAB Average cost/cycle per programmed operation: 0.12559383365496563
+John_EAB Average cycletime per programmed operation: 15.948209599917902
+John_EAB Average waiting time per programmed operation: 2.377170254748816
+John_EAB Average number of failures: 825.4483
+John_EAB Average failure prob per programmed operation: 0.3028671114298292
+John_EAB Average cost/timecycle per programmed operation (2): 0.11900757948181977

@@ -57,4 +57,13 @@ public class MGraph {
 	public void setArcs(ArrayList<MArc> arcs) {
 		this.arcs = arcs;
 	}
+	
+	public MNode getNodebyID(int ID){
+		for (int i = 0; i < nodes.size(); i++) {
+			if(nodes.get(i).getId() == ID){
+				return nodes.get(i);
+			}
+		}
+		return null;
+	}
 }

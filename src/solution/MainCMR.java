@@ -92,10 +92,9 @@ public class MainCMR {
 	/**
 	 * Main
 	 * @param args
-	 * @throws UnsupportedEncodingException 
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String[] args) throws IOException {
 		/*
 		 * Parámetro para tomar el tiempo computacional del Maintenanance
 		 */
@@ -245,238 +244,261 @@ public class MainCMR {
 
 		//Este es solo para revisar cuántos sitios y cuáles sitios tengo cada semana, solo es impresion
 
-		File file = new File(rutaF+"GMM"+".dat");
-		try {
-			writer = new PrintWriter(new FileWriter(file,true));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		writer.println("id"+" "+"Opt"+" "+"Opt_cost");
-		for(int i=0;i<gmm.getNodes().size();i++) {
-			writer.println(gmm.getNodes().get(i).getId()+" "+gmm.getNodes().get(i).getOpt()+" "+gmm.getNodes().get(i).getOptcost());
-			System.out.println(gmm.getNodes().get(i).getId()+" "+gmm.getNodes().get(i).getOpt()+" "+gmm.getNodes().get(i).getOptcost());
-		}
-		writer.close();
-
-		File file0 = new File(rutaF+"GVRP"+".dat");
-		try {
-			writer0 = new PrintWriter(new FileWriter(file0,true));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		writer0.println("id1"+" "+"id2"+" "+"id3"+" "+"Opt"+" "+"Opt_original"+" "+"cycle_time");
-		for(int i=0;i<gvrp.getNodes().size();i++) {
-			writer0.println(gvrp.getNodes().get(i).getId1()+" "+gvrp.getNodes().get(i).getId2()+" "+gvrp.getNodes().get(i).getId3()+" "+gvrp.getNodes().get(i).getOpt()+" "+gvrp.getNodes().get(i).getOpt_original()+" "+gvrp.getNodes().get(i).getCycletime());
-		}
-		writer0.close();
-
-
-
-		File file1 = new File(rutaF+"SmallgraphsSizes"+".dat");
-		try {
-			writer1 = new PrintWriter(new FileWriter(file1,true));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		for(int p=0;p<smallgraphs.size();p++){	
-			System.out.println("smallgraph "+p+" size:"+smallgraphs.get(p).getNodes().size());
-			writer1.println("smallgraph "+p+" size:"+smallgraphs.get(p).getNodes().size());
-			//								for(int pp=0;pp<smallgraphs.get(p).getNodes().size();pp++){
-			//									System.out.println(smallgraphs.get(p).getNodes().get(pp).getId1()+" "+smallgraphs.get(p).getNodes().get(pp).getId2()+" "+smallgraphs.get(p).getNodes().get(pp).getId3());
-			//								}
-		}
-		writer1.close();
-		System.out.println("Tmin \t Tmax \t");
-		timeMaintenance=System.currentTimeMillis()-timeMaintenance;
-
-		String nombreF = "Rutas_semana_";
+//		File file = new File(rutaF+"GMM"+".dat");
+//		try {
+//			writer = new PrintWriter(new FileWriter(file,true));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		writer.println("id"+" "+"Opt"+" "+"Opt_cost");
+//		for(int i=0;i<gmm.getNodes().size();i++) {
+//			writer.println(gmm.getNodes().get(i).getId()+" "+gmm.getNodes().get(i).getOpt()+" "+gmm.getNodes().get(i).getOptcost());
+//			System.out.println(gmm.getNodes().get(i).getId()+" "+gmm.getNodes().get(i).getOpt()+" "+gmm.getNodes().get(i).getOptcost());
+//		}
+//		writer.close();
+//
+//		File file0 = new File(rutaF+"GVRP"+".dat");
+//		try {
+//			writer0 = new PrintWriter(new FileWriter(file0,true));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		writer0.println("id1"+" "+"id2"+" "+"id3"+" "+"Opt"+" "+"Opt_original"+" "+"cycle_time");
+//		for(int i=0;i<gvrp.getNodes().size();i++) {
+//			writer0.println(gvrp.getNodes().get(i).getId1()+" "+gvrp.getNodes().get(i).getId2()+" "+gvrp.getNodes().get(i).getId3()+" "+gvrp.getNodes().get(i).getOpt()+" "+gvrp.getNodes().get(i).getOpt_original()+" "+gvrp.getNodes().get(i).getCycletime());
+//		}
+//		writer0.close();
+//
+//
+//
+//		File file1 = new File(rutaF+"SmallgraphsSizes"+".dat");
+//		try {
+//			writer1 = new PrintWriter(new FileWriter(file1,true));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		for(int p=0;p<smallgraphs.size();p++){	
+//			System.out.println("smallgraph "+p+" size:"+smallgraphs.get(p).getNodes().size());
+//			writer1.println("smallgraph "+p+" size:"+smallgraphs.get(p).getNodes().size());
+//			//								for(int pp=0;pp<smallgraphs.get(p).getNodes().size();pp++){
+//			//									System.out.println(smallgraphs.get(p).getNodes().get(pp).getId1()+" "+smallgraphs.get(p).getNodes().get(pp).getId2()+" "+smallgraphs.get(p).getNodes().get(pp).getId3());
+//			//								}
+//		}
+//		writer1.close();
+//		System.out.println("Tmin \t Tmax \t");
+//		timeMaintenance=System.currentTimeMillis()-timeMaintenance;
+//
+//		String nombreF = "Rutas_semana_";
 
 		ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas = new ArrayList<ArrayList<ArrayList<Tres>>>(); 
 		ArrayList<ArrayList<ArrayList<Double>>> horas_todas = new ArrayList<ArrayList<ArrayList<Double>>>();
-		ArrayList<ArrayList<Route>> weeklyschedules = new ArrayList<ArrayList<Route>>();
-		int cualvoy=0;
-		//Esté es el codigo para ejecutar cada semana
-		timeRouting=System.currentTimeMillis();	
-		double SimuZero=0.0;
-		for (int i = cualvoy; i<1*(smallgraphs.size());i++){
-			if(i==0) {
-				SimuZero=smallgraphs.get(i).getTmin();
-			}
-
-			System.out.println("======================================================================================================================================================================");
-			System.out.println("Ruteando semana "+i);
-			System.out.println("======================================================================================================================================================================");
-			GraspSplitSolver routingSolver = new GraspSplitSolver();
-			if(HeuristicaconEduyindata=="on"){
-				routingSolver.solve("RuteoSemana_"+i,gmm,smallgraphs.get(i), smallgraphs.get(i).getTmin(), smallgraphs.get(i).getTmax(),HeuristicasinMIP,numrutas,HeuristicaconEduyindata,Edd,Edeep);
-
-			} else{
-				routingSolver.solve("RuteoSemana_"+i,gmm,smallgraphs.get(i), smallgraphs.get(i).getTmin(), smallgraphs.get(i).getTmax(),HeuristicasinMIP,numrutas,HeuristicaconEduyindata,dd,deep);
-
-			}
-			weeklyschedules.add(routingSolver.getRutascompletasTres());
-			ArrayList<ArrayList<Tres>> rutas2 = new ArrayList<ArrayList<Tres>>();
-
-			//ArrayList<RGraph> rutas=new ArrayList<RGraph>();
-			ArrayList<ArrayList<Double>> horas=new ArrayList<ArrayList<Double>>();
-			for(int j=0;j<routingSolver.getRutascompletasTres().size();j++){
-				//				System.out.println("Route: "+j);
-				// Cambiar esto a maintenancer.Route
-				ArrayList<Tres> ruta2 = new ArrayList<Tres>();
-				//RGraph ruta=new RGraph();
-
-				ArrayList<Double> hour=new ArrayList<Double>();
-				for(int k=0;k<routingSolver.getRutascompletasTres().get(j).getRoute().size();k++){
-					for(int l=0;l<smallgraphs.get(i).getNodes().size();l++){
-						//RNode rnodo=new RNode();
-						if(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventsOperationsID()==smallgraphs.get(i).getNodes().get(l).getId3()){
-							Tres nodo = new Tres(smallgraphs.get(i).getNodes().get(l).getId1() , smallgraphs.get(i).getNodes().get(l).getId2(), routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
-							//rnodo=smallgraphs.get(i).getNodes().get(l);
-							ruta2.add(nodo);
-							//ruta.addNode(rnodo);
-							hour.add(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
-						}
-					}
-				}
-				rutas2.add(ruta2);
-				//rutas.add(ruta);
-				horas.add(hour);
-			}		
-
-			rutas_todas.add(rutas2);
-			horas_todas.add(horas);
-
-
-			//ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas_backup = new ArrayList<ArrayList<ArrayList<Tres>>>(rutas_todas);			
-			//rutas_todas_backup = rutas_todas;
-
-			//Ya con el split se debe correr la simulación.
-
-			//Ya con la simulación se debe hacer update de las operaciones no planeadas (realizadas y no realizadas en la simulación)
-
-			//Pair uno=new Pair(11,255);
-			//Pair dos=new Pair(23,256);
-			//Pair tres=new Pair(15,257);
-			//Pair cuatro=new Pair(20,258);
-			//lista.addPair(uno);
-			//lista.addPair(dos);
-			//lista.addPair(tres);
-			//lista.addPair(cuatro);
-			//			System.out.println("************************************");
-
-			//Esta sección solo está imprimiendo no importante para el código
-			//			System.out.println("------------Maintenance Cost----------------------------------");
-			//			double costo=0;
-			//			for(int j=0;j<smallgraphs.get(i).getNodes().size();j++){
-			//				for(int k=0;k<gmm.getNodes().size();k++){
-			//					RNode nodito=smallgraphs.get(i).getNodes().get(j);
-			//					if(nodito.getId1()==gmm.getNodes().get(k).getId()){
-			//						costo=costo+gmm.getNodes().get(k).getOptcost();
-			//						//						System.out.println(nodito.getId1()+" "+gmm.getNodes().get(k).getOptcost());
-			//					}
-			//				}
-			//			}
-			//			System.out.println(costo);
-
-
-
-			File file2 = new File(rutaF+nombreF+i+".dat");
-			System.out.println(rutaF+nombreF+i+".dat");
-			try {
-				writer2 = new PrintWriter(new FileWriter(file2,true));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			writer2.println("Site_ID Site_time_routing");
-			for(int j=0;j<routingSolver.getRutascompletasTres().size();j++){
-				for(int k=0;k<routingSolver.getRutascompletasTres().get(j).getRoute().size();k++) {
-					writer2.println(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventsSitesID()+" "+routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
-				}
-
-
-			}
-			writer2.close();
-
-		}  // Acá acaba el for de las semanas
-
-		ArrayList<Route> bigFinalSchedule = new ArrayList<Route>();
-		for(int j=0;j<weeklyschedules.size();j++) {
-			System.out.println("rutas semana "+j+" "+weeklyschedules.get(j).size());
-			for(int k=0;k<weeklyschedules.get(j).size();k++) {
-				bigFinalSchedule.add(weeklyschedules.get(j).get(k));
-			}
+//		ArrayList<ArrayList<Route>> weeklyschedules = new ArrayList<ArrayList<Route>>();
+//		int cualvoy=0;
+//		//Esté es el codigo para ejecutar cada semana
+//		timeRouting=System.currentTimeMillis();	
+//		double SimuZero=0.0;
+//		for (int i = cualvoy; i<1*(smallgraphs.size());i++){
+//			if(i==0) {
+//				SimuZero=smallgraphs.get(i).getTmin();
+//			}
+//
+//			System.out.println("======================================================================================================================================================================");
+//			System.out.println("Ruteando semana "+i);
+//			System.out.println("======================================================================================================================================================================");
+//			GraspSplitSolver routingSolver = new GraspSplitSolver();
+//			if(HeuristicaconEduyindata=="on"){
+//				routingSolver.solve("RuteoSemana_"+i,gmm,smallgraphs.get(i), smallgraphs.get(i).getTmin(), smallgraphs.get(i).getTmax(),HeuristicasinMIP,numrutas,HeuristicaconEduyindata,Edd,Edeep);
+//
+//			} else{
+//				routingSolver.solve("RuteoSemana_"+i,gmm,smallgraphs.get(i), smallgraphs.get(i).getTmin(), smallgraphs.get(i).getTmax(),HeuristicasinMIP,numrutas,HeuristicaconEduyindata,dd,deep);
+//
+//			}
+//			weeklyschedules.add(routingSolver.getRutascompletasTres());
+//			ArrayList<ArrayList<Tres>> rutas2 = new ArrayList<ArrayList<Tres>>();
+//
+//			//ArrayList<RGraph> rutas=new ArrayList<RGraph>();
+//			ArrayList<ArrayList<Double>> horas=new ArrayList<ArrayList<Double>>();
+//			for(int j=0;j<routingSolver.getRutascompletasTres().size();j++){
+//				//				System.out.println("Route: "+j);
+//				// Cambiar esto a maintenancer.Route
+//				ArrayList<Tres> ruta2 = new ArrayList<Tres>();
+//				//RGraph ruta=new RGraph();
+//
+//				ArrayList<Double> hour=new ArrayList<Double>();
+//				for(int k=0;k<routingSolver.getRutascompletasTres().get(j).getRoute().size();k++){
+//					for(int l=0;l<smallgraphs.get(i).getNodes().size();l++){
+//						//RNode rnodo=new RNode();
+//						if(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventsOperationsID()==smallgraphs.get(i).getNodes().get(l).getId3()){
+//							Tres nodo = new Tres(smallgraphs.get(i).getNodes().get(l).getId1() , smallgraphs.get(i).getNodes().get(l).getId2(), routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
+//							//rnodo=smallgraphs.get(i).getNodes().get(l);
+//							ruta2.add(nodo);
+//							//ruta.addNode(rnodo);
+//							hour.add(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
+//						}
+//					}
+//				}
+//				rutas2.add(ruta2);
+//				//rutas.add(ruta);
+//				horas.add(hour);
+//			}		
+//
+//			rutas_todas.add(rutas2);
+//			horas_todas.add(horas);
+//
+//
+//			//ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas_backup = new ArrayList<ArrayList<ArrayList<Tres>>>(rutas_todas);			
+//			//rutas_todas_backup = rutas_todas;
+//
+//			//Ya con el split se debe correr la simulación.
+//
+//			//Ya con la simulación se debe hacer update de las operaciones no planeadas (realizadas y no realizadas en la simulación)
+//
+//			//Pair uno=new Pair(11,255);
+//			//Pair dos=new Pair(23,256);
+//			//Pair tres=new Pair(15,257);
+//			//Pair cuatro=new Pair(20,258);
+//			//lista.addPair(uno);
+//			//lista.addPair(dos);
+//			//lista.addPair(tres);
+//			//lista.addPair(cuatro);
+//			//			System.out.println("************************************");
+//
+//			//Esta sección solo está imprimiendo no importante para el código
+//			//			System.out.println("------------Maintenance Cost----------------------------------");
+//			//			double costo=0;
+//			//			for(int j=0;j<smallgraphs.get(i).getNodes().size();j++){
+//			//				for(int k=0;k<gmm.getNodes().size();k++){
+//			//					RNode nodito=smallgraphs.get(i).getNodes().get(j);
+//			//					if(nodito.getId1()==gmm.getNodes().get(k).getId()){
+//			//						costo=costo+gmm.getNodes().get(k).getOptcost();
+//			//						//						System.out.println(nodito.getId1()+" "+gmm.getNodes().get(k).getOptcost());
+//			//					}
+//			//				}
+//			//			}
+//			//			System.out.println(costo);
+//
+//
+//
+//			File file2 = new File(rutaF+nombreF+i+".dat");
+//			System.out.println(rutaF+nombreF+i+".dat");
+//			try {
+//				writer2 = new PrintWriter(new FileWriter(file2,true));
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			writer2.println("Site_ID Site_time_routing");
+//			for(int j=0;j<routingSolver.getRutascompletasTres().size();j++){
+//				for(int k=0;k<routingSolver.getRutascompletasTres().get(j).getRoute().size();k++) {
+//					writer2.println(routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventsSitesID()+" "+routingSolver.getRutascompletasTres().get(j).getRoute().get(k).getEventTimes());
+//				}
+//
+//
+//			}
+//			writer2.close();
+//
+//		}  // Acá acaba el for de las semanas
+//
+//		ArrayList<Route> bigFinalSchedule = new ArrayList<Route>();
+//		for(int j=0;j<weeklyschedules.size();j++) {
+//			System.out.println("rutas semana "+j+" "+weeklyschedules.get(j).size());
+//			for(int k=0;k<weeklyschedules.get(j).size();k++) {
+//				bigFinalSchedule.add(weeklyschedules.get(j).get(k));
+//			}
+//		}
+//		System.out.println("BigSchedule");
+//		for(int j=0;j<bigFinalSchedule.size();j++) {
+//			for(int k=0;k<bigFinalSchedule.get(j).getRoute().size();k++) {
+//				System.out.println(bigFinalSchedule.get(j).getRoute().get(k).getEventsSitesID()+" "+bigFinalSchedule.get(j).getRoute().get(k).getEventTimes());
+//			}
+//		}
+//
+//
+//		System.out.println("***************************************Estático********************************************************");
+//		timeRouting=System.currentTimeMillis()-timeRouting;	
+//		timeSimulation=System.currentTimeMillis();	
+//		System.out.println("--------------Simulation-----------------------------");
+//		if(HeuristicaconEduyindata=="on" && EduyindataBIG=="off"){
+//			for(int j=0;j<bigFinalSchedule.size();j++){
+//				System.out.println(bigFinalSchedule.get(j));
+//				for(int k=0;k<bigFinalSchedule.get(j).getRoute().size();k++) {
+//					System.out.println("j: "+j+" k: "+k+" "+bigFinalSchedule.get(j).getRoute().get(k).getEventsSitesID());
+//				}
+//			}
+//			Organizador organizado=new Organizador(bigFinalSchedule);
+//			LeerEduyinSimu leyendo=new LeerEduyinSimu("./data/simulacioneduyin"+ET1+".txt");
+//			System.out.println("Mia");
+//			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
+//				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
+//			}
+//			System.out.println("Eduyn");
+//			for(int k=0;k<leyendo.getRuta().getRoute().size();k++) {
+//				System.out.println(leyendo.getRuta().getRoute().get(k).getEventsSitesID()+" "+leyendo.getRuta().getRoute().get(k).getEventsOperationsID()+" "+leyendo.getRuta().getRoute().get(k).getEventTimes());
+//			}
+//			System.out.println("gvrp.tmin "+gvrp.getTmin());
+//			int tam=gvrp.getNodes().size();
+//			Simulator simulacion1=new Simulator("John_t="+ET1,organizado.getRuta(), gmm, tam,SimuZero);//gvrp.getTmin()
+//			Simulator simulacion=new Simulator("Eduyin_t="+ET1,leyendo.getRuta(), gmm, tam,SimuZero);
+//			//
+//		} 
+//		else{
+//			Organizador organizado=new Organizador(bigFinalSchedule);
+//			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
+//				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
+//			}
+//			System.out.println("Mia");
+//			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
+//				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
+//			}
+//
+//			Simulator simulacion1=new Simulator("John_EAB",organizado.getRuta(), gmm, organizado.getRuta().getRoute().size(),SimuZero);	
+//		}
+//
+//
+//		timeTotal=System.currentTimeMillis()-timeTotal;
+//		File file3 = new File(rutaF+"Tiempos"+".dat");
+//		try {
+//			writer3 = new PrintWriter(new FileWriter(file3,true));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		writer3.println("Reading time: "+(timeRead));
+//		writer3.println("Maintenace time: "+(timeMaintenance));
+//		writer3.println("Routing time: "+(timeRouting));
+//		writer3.println("Simulation time: "+(timeSimulation));
+//		writer3.println("Total time: "+(timeTotal));
+//		writer3.close();
+		
+		
+		String preFile = "./data/Rutas_semana_";
+		String posFile = ".dat";
+				
+		for (int i = 0; i < smallgraphs.size(); i++) {
+			Datahandler semana = new Datahandler(preFile + i + posFile);
+			semana.readInstance();
+			rutas_todas.add(semana.getRutas_semana());
+			horas_todas.add(semana.getHoras_semana());
 		}
-		System.out.println("BigSchedule");
-		for(int j=0;j<bigFinalSchedule.size();j++) {
-			for(int k=0;k<bigFinalSchedule.get(j).getRoute().size();k++) {
-				System.out.println(bigFinalSchedule.get(j).getRoute().get(k).getEventsSitesID()+" "+bigFinalSchedule.get(j).getRoute().get(k).getEventTimes());
-			}
-		}
-
-
-		System.out.println("***************************************Estático********************************************************");
-		timeRouting=System.currentTimeMillis()-timeRouting;	
-		timeSimulation=System.currentTimeMillis();	
-		System.out.println("--------------Simulation-----------------------------");
-		if(HeuristicaconEduyindata=="on" && EduyindataBIG=="off"){
-			for(int j=0;j<bigFinalSchedule.size();j++){
-				System.out.println(bigFinalSchedule.get(j));
-				for(int k=0;k<bigFinalSchedule.get(j).getRoute().size();k++) {
-					System.out.println("j: "+j+" k: "+k+" "+bigFinalSchedule.get(j).getRoute().get(k).getEventsSitesID());
-				}
-			}
-			Organizador organizado=new Organizador(bigFinalSchedule);
-			LeerEduyinSimu leyendo=new LeerEduyinSimu("./data/simulacioneduyin"+ET1+".txt");
-			System.out.println("Mia");
-			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
-				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
-			}
-			System.out.println("Eduyn");
-			for(int k=0;k<leyendo.getRuta().getRoute().size();k++) {
-				System.out.println(leyendo.getRuta().getRoute().get(k).getEventsSitesID()+" "+leyendo.getRuta().getRoute().get(k).getEventsOperationsID()+" "+leyendo.getRuta().getRoute().get(k).getEventTimes());
-			}
-			System.out.println("gvrp.tmin "+gvrp.getTmin());
-			int tam=gvrp.getNodes().size();
-			Simulator simulacion1=new Simulator("John_t="+ET1,organizado.getRuta(), gmm, tam,SimuZero);//gvrp.getTmin()
-			Simulator simulacion=new Simulator("Eduyin_t="+ET1,leyendo.getRuta(), gmm, tam,SimuZero);
-			//
-		} 
-		else{
-			Organizador organizado=new Organizador(bigFinalSchedule);
-			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
-				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
-			}
-			System.out.println("Mia");
-			for(int k=0;k<organizado.getRuta().getRoute().size();k++) {
-				System.out.println(organizado.getRuta().getRoute().get(k).getEventsSitesID()+" "+organizado.getRuta().getRoute().get(k).getEventsOperationsID()+" "+organizado.getRuta().getRoute().get(k).getEventTimes());
-			}
-
-			Simulator simulacion1=new Simulator("John_EAB",organizado.getRuta(), gmm, organizado.getRuta().getRoute().size(),SimuZero);	
-		}
-
-
-		timeTotal=System.currentTimeMillis()-timeTotal;
-		File file3 = new File(rutaF+"Tiempos"+".dat");
-		try {
-			writer3 = new PrintWriter(new FileWriter(file3,true));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		writer3.println("Reading time: "+(timeRead));
-		writer3.println("Maintenace time: "+(timeMaintenance));
-		writer3.println("Routing time: "+(timeRouting));
-		writer3.println("Simulation time: "+(timeSimulation));
-		writer3.println("Total time: "+(timeTotal));
-		writer3.close();
+		
+//		for (int i = 0; i < rutas_todas.size(); i++) {
+//			System.out.println("Semana "+i);
+//			for(int j = 0; j < rutas_todas.get(i).size(); j++){
+//				System.out.println("Ruta "+j);
+//				for(int k = 0 ; k < rutas_todas.get(i).get(j).size(); k++){
+//					System.out.println(rutas_todas.get(i).get(j).get(k).getEventsSitesID() + "\t" + rutas_todas.get(i).get(j).get(k).getEventTimes());
+//				}
+//			}
+//		}
+		
+		
 
 		DynamicSimulation hola = new DynamicSimulation(gvrp,gmm, smallgraphs, rutas_todas, horas_todas, VEL, 10000);
-
+		System.out.println(hola.getClass());
 	} 
 
 	public double [] getNs() {
