@@ -179,6 +179,8 @@ public class DynamicSimulation {
 									costo_ciclo_prom = costo_ciclo_prom + costo_ciclo_i;
 									denom_costo_ciclo++;
 									main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw() * (horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCcm())/( horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]));
+								}else{
+									main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw() * (horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCcm())/(gvrp.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1).getCycletime()));
 								}
 								cuantas_fallaron++;
 								
@@ -188,7 +190,9 @@ public class DynamicSimulation {
 									denom_costo_ciclo++;
 									costo_ciclo_prom = (long) (costo_ciclo_prom + (gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm())/(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]));
 									main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm())/(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]));
-								}					
+								}else{
+									main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm())/(gvrp.getNodes().get(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1).getCycletime()));
+								}
 								
 								NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getTpm() + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
 							}
@@ -284,7 +288,9 @@ public class DynamicSimulation {
 							denom_costo_ciclo++;
 							main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCw() * (horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1]) +gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCcm())/(arrival_time - LastVisit[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1])); 
 							
-						}			
+						}else{
+							main_cost[i] = main_cost[i] + ((gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCw() * (horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1]) +gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCcm())/(gvrp.getNodes().get(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1).getCycletime())); //  arrival_time - LastVisit[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1]))
+						}
 						
 						
 						
