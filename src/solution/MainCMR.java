@@ -61,7 +61,7 @@ public class MainCMR {
 	private int idmin;
 	public static double T=7*100; //Horizonte de planeación 
 	public static int T1=7; //Horizonte de planeación por semanas
-	public static int Nweeks=12; //Horizonte de planeación por semanas
+	public static int Nweeks=8; //Horizonte de planeación por semanas
 	public static double ET=112;//7*52; //Horizonte de planeación 
 	public static int ET1=112; //Horizonte de planeación por semanas
 	public static int Edd=100;//For TSPs 150
@@ -498,7 +498,7 @@ public class MainCMR {
 		
 
 		DynamicSimulation hola = new DynamicSimulation(gvrp,gmm, smallgraphs, rutas_todas, horas_todas, VEL, 10000);
-		System.out.println(hola.getClass());
+		hola.getClass();
 	} 
 
 	public double [] getNs() {

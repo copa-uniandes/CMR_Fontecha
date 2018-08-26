@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Random;
 
 import maintenancer.MGraph;
-import maintenancer.MNode;
 import maintenancer.Tres;
 import router.RGraph;
 import router.RNode;
@@ -18,24 +17,40 @@ public class DynamicSimulation {
 
 	public DynamicSimulation(RGraph gvrp, MGraph gmm, ArrayList<RGraph> smallgraphs, ArrayList<ArrayList<ArrayList<Tres>>> rutas_todas2, ArrayList<ArrayList<ArrayList<Double>>> horas_todas2, double VEL, int iteraciones) throws FileNotFoundException, UnsupportedEncodingException{
 		PrintWriter writer = new PrintWriter("Dynamic_simulation_results.txt", "UTF-8");
+		PrintWriter writer2 = new PrintWriter("Dynamic_simulation_routes.txt", "UTF-8");
 		//System.out.println(gmm.getNodes().size());
 		//for (int i = 0; i < gmm.getNodes().size(); i++) {
 		//	System.out.println("ID: "+gmm.getNodes().get(i).getId());
 		//}
 		
+		for (int i = 0; i < smallgraphs.size(); i++) {
+			System.out.println("El min de la semana " + i + " es " + smallgraphs.get(i).getTmin() + " y el max es " + smallgraphs.get(i).getTmax());
+		}
+		
+		
+		
 		//Imprimir las rutas normales
-//		writer2.println("Rutas Base");
-//		for (int i = 0; i < rutas_todas2.size(); i++) { //iterar sobre todas las semanas
-//			writer2.println("Semana "+i);
-//			for (int j = 0; j < rutas_todas2.get(i).size(); j++) { // itera sobre las rutas
-//				String linea = new String();
-//				linea = j + "\t";
-//				for (int k = 0; k < rutas_todas2.get(i).get(j).size(); k++) {
-//					linea = linea + rutas_todas2.get(i).get(j).get(k).getEventsSitesID() + "\t";
-//				}
-//				writer2.println(linea);
-//			}
-//		}
+		writer2.println("Rutas Base");
+		for (int i = 0; i < rutas_todas2.size(); i++) { //iterar sobre todas las semanas
+			writer2.println("Semana "+i);
+			for (int j = 0; j < rutas_todas2.get(i).size(); j++) { // itera sobre las rutas
+				String linea = new String();
+				linea = j + "\t";
+				for (int k = 0; k < rutas_todas2.get(i).get(j).size(); k++) {
+					linea = linea + rutas_todas2.get(i).get(j).get(k).getEventsSitesID() + "\t";
+				}
+				writer2.println(linea);
+			}
+		}
+		
+		int cuantas_son = 0;
+		for (int i2 = 0; i2 < rutas_todas2.size(); i2++) { //iterar sobre todas las semanas
+			for (int j = 0; j < rutas_todas2.get(i2).size(); j++) { // itera sobre las rutas
+				cuantas_son = cuantas_son + rutas_todas2.get(i2).get(j).size() - 1;
+			}				
+		}
+		System.out.println(cuantas_son);
+		
 		System.out.println("termino de imprimir rutas normales");
 		int[] cycletimes = getCycles(smallgraphs, gmm,gvrp);
 		System.out.println("Salio de getcycles");
@@ -59,6 +74,12 @@ public class DynamicSimulation {
 		
 		
 		for (int i = 0; i < iteraciones; i++) {
+			Random RNG = new Random(1000000*i);
+			
+			//for (int j = 0; j < 50; j++) {
+			//	System.out.println(gmm.getNodebyID(80).getD().inverseF(RNG.nextDouble()));
+			//}
+
 			// Para contar el promedio de la probabilidad de falla
 			double prob_falla_prom = 0;
 			int denom_prob_falla = 0;
@@ -94,11 +115,14 @@ public class DynamicSimulation {
 				horas_todas.add(nuevas_horas_semana);
 			}
 			
-			Random RNG = new Random(10*i);
-			System.out.println("iteracion "+i);
+			
+			//System.out.println("iteracion "+i);
 			
 			//Genero el último tiempo de atención
 			double LastVisit[] = new double[gmm.getNodes().size()];
+			for (int j = 0; j < LastVisit.length; j++) {
+				LastVisit[j] = 0;
+			}
 			
 			
 			
@@ -121,9 +145,12 @@ public class DynamicSimulation {
 			ArrayList<Double> s_tiempo_fallas = new ArrayList<Double>();
 			
 			//Este loop revisa cada semana
-			for (int j = 0; j < 0*2 + 1*(smallgraphs.size()); j++) {
-				System.out.println("Semana "+j);
-				ArrayList<MNode> sitios = new ArrayList<MNode>(gmm.getNodes());
+			for (int j = 0; j < 0*2 + 1*(smallgraphs.size()-4); j++) {
+				//System.out.println("Semana "+j);
+				ArrayList<Integer> sitios = new ArrayList<Integer>();
+				for (int k = 0; k < gmm.getNodes().size(); k++) {
+					sitios.add(k+1);
+				}
 				double[] ultimo_t = new double[rutas_todas.get(j).size()];
 				double[] sorted_ultima = new double[rutas_todas.get(j).size()];
 				
@@ -131,23 +158,34 @@ public class DynamicSimulation {
 				for (int k = 0; k < rutas_todas.get(j).size(); k++) { //Voy a revisar todas las rutas de la semana j
 					//System.out.println("Tamaño de las rutas: " + rutas_todas.get(j).get(k).size());
 					for (int k2 = 0; k2 < rutas_todas.get(j).get(k).size(); k2++) { //Voy a revisar cada visita de cada ruta k de la semana j
+						if(fallas.contains(rutas_todas.get(j).get(k).get(k2).getEventsSitesID())){
+							s_tiempo_fallas.remove(tiempo_fallas.get(fallas.indexOf(rutas_todas.get(j).get(k).get(k2).getEventsSitesID())));
+							tiempo_fallas.remove(fallas.indexOf(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()));
+							fallas.remove(fallas.indexOf(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()));
+						}
 						if(rutas_todas.get(j).get(k).get(k2).getEventsSitesID() != 0){
 							if(LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] != 0){
-								prob_falla_prom = prob_falla_prom + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().cdf(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
+								double prob_falla_i = gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().cdf(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
+								//writer.println("Visita \t " + horas_todas.get(j).get(k).get(k2) + "\t Ultima: \t " + LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] + "\t Prob \t " +  gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().cdf(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]));
+								prob_falla_prom = prob_falla_prom + prob_falla_i;
 								denom_prob_falla++;
 							}							
 							if (NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] < horas_todas.get(j).get(k).get(k2) ) { //Si el sitio falló antes de ser reparado
+								//System.out.println("Falló el sitio preventivamente " + rutas_todas.get(j).get(k).get(k2).getEventsSitesID() + " en la semana " + j);
 								if(LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] != 0){
-									costo_ciclo_prom = costo_ciclo_prom + (gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw() * (horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCcm())/(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
-									denom_prob_falla++;
+									double costo_ciclo_i = ( gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw() * (horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCcm() ) / ( horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);  
+											 // / ( horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
+									System.out.println(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
+									costo_ciclo_prom = costo_ciclo_prom + costo_ciclo_i;
+									denom_costo_ciclo++;
 								}
 								cuantas_fallaron++;
 								main_cost[i] = main_cost[i] + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCw() * (horas_todas.get(j).get(k).get(k2) - NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCcm();
 								NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getTcm() + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
 							}else{
 								if(LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] != 0){
-									costo_ciclo_prom = costo_ciclo_prom + (gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm())/(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]);
-									denom_prob_falla++;
+									costo_ciclo_prom = (long) (costo_ciclo_prom + (gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm())/(horas_todas.get(j).get(k).get(k2) - LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1]));
+									denom_costo_ciclo++;
 								}					
 								main_cost[i] = main_cost[i] + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getCpm();
 								NextFailure[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2) + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getTpm() + gmm.getNodebyID(rutas_todas.get(j).get(k).get(k2).getEventsSitesID()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
@@ -155,7 +193,7 @@ public class DynamicSimulation {
 							LastVisit[rutas_todas.get(j).get(k).get(k2).getEventsSitesID()-1] = horas_todas.get(j).get(k).get(k2);
 							//System.out.println(rutas_todas.get(j).get(k).get(k2).getEventsSitesID());
 							for (int l = 0; l < sitios.size(); l++) {
-								if (sitios.get(l).getId() == rutas_todas.get(j).get(k).get(k2).getEventsSitesID()) {
+								if (sitios.get(l) == rutas_todas.get(j).get(k).get(k2).getEventsSitesID()) {
 									sitios.remove(l);
 								}
 							}
@@ -163,24 +201,27 @@ public class DynamicSimulation {
 					}
 					ultimo_t[k] = horas_todas.get(j).get(k).get(horas_todas.get(j).get(k).size()-1);
 					sorted_ultima[k] = horas_todas.get(j).get(k).get(horas_todas.get(j).get(k).size()-1);
+					
+					
 				}
 				Arrays.sort(sorted_ultima);
 				
-//				for (int k = 0; k < sorted_ultima.length; k++) {
-//					System.out.println(ultimo_t[k] + "\t" + sorted_ultima[k]);
-//				}
+				//for (int k = 0; k < sorted_ultima.length; k++) {
+				//	System.out.println(ultimo_t[k] + "\t" + sorted_ultima[k]);
+				//}
 
 				// Reviso si los sitios que no visité fallaron esa semana
 				for (int k = 0; k < sitios.size(); k++) {
 					//System.out.println("Sitio "+sitios.get(k).getId()+", Tmin: "+smallgraphs.get(0).getTmin()+", T_Falla: " + NextFailure[sitios.get(k).getId()-1]);
-					if (NextFailure[sitios.get(k).getId()-1] < smallgraphs.get(j).getTmax()) {
+					if (NextFailure[sitios.get(k)-1] < smallgraphs.get(j).getTmax() && !fallas.contains(sitios.get(k))) {
 						// TO DO
 						// Pegarlo a una ruta actual, calcular el costo y el tiempo en el que lo visita
 						//Organizarlos FIFO, barriendo en las rutas cuál llegaría más temprano
+						//System.out.println("Falló el sitio " + sitios.get(k).getId() + " en la semana " + j);
 						cuantas_fallaron++;
-						fallas.add(sitios.get(k).getId());
-						tiempo_fallas.add(NextFailure[sitios.get(k).getId()-1]);
-						s_tiempo_fallas.add(NextFailure[sitios.get(k).getId()-1]);
+						fallas.add(sitios.get(k));
+						tiempo_fallas.add(NextFailure[sitios.get(k)-1]);
+						s_tiempo_fallas.add(NextFailure[sitios.get(k)-1]);
 						// Actualizar el tiempo de falla
 						//NextFailure[sitios.get(k).getId()] =  gmm.getNodes().get(sitios.get(k).getId()).getD().inverseF(RNG.nextDouble()); // Actualizo el tiempo de falla
 						
@@ -191,24 +232,23 @@ public class DynamicSimulation {
 						// ii. Agregar las nuevas visitas	
 					}
 				}
-				System.out.println("En la semana "+j+" hay "+fallas.size()+" fallas");
+				//System.out.println("En la semana "+j+" hay "+fallas.size()+" fallas");
 				
 				Collections.sort(s_tiempo_fallas);
 				boolean continuar = !fallas.isEmpty();
 				
-//				for (int k = 0; k < fallas.size(); k++) {
-//					System.out.println("ID "+fallas.get(k) + "\t T_Falla " + tiempo_fallas.get(k) + "\t T_s " + s_tiempo_fallas.get(k) + "\t ID_s " + fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(k))) );
-//				}
+				//for (int k = 0; k < fallas.size(); k++) {
+				//	System.out.println("ID "+fallas.get(k) + "\t T_Falla " + tiempo_fallas.get(k) + "\t T_s " + s_tiempo_fallas.get(k) + "\t ID_s " + fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(k))) );
+				//}
 								
 				while(continuar){ 
 					
 					// la ruta a la que le voy a pegar a algo
 					int ruta_mod = indexOfArray(ultimo_t, sorted_ultima[0]);
-//					int ruta_mod2 = indexOfArray(ultimo_t, sorted_ultima[1]);
-//					
-//					if (rutas_todas.get(j).get(ruta_mod).size() == 1) {
-//						ruta_mod = ruta_mod2;
-//					}
+					//int ruta_mod2 = indexOfArray(ultimo_t, sorted_ultima[1]);
+					//if (rutas_todas.get(j).get(ruta_mod).size() == 1) {
+					//	ruta_mod = ruta_mod2;
+					//}
 				
 					// el momento en el que se hace la última visita
 					double tiempo_ultima = sorted_ultima[0];
@@ -224,12 +264,13 @@ public class DynamicSimulation {
 						deltaY = gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getPosy() - gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getPosy();
 					}
 									
-					double travel_time = (Math.abs(deltaX) + Math.abs(deltaY)) / VEL + getNodeFromSGbyID(smallgraphs, rutas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getExpectedservicetime();
+					double travel_time = ((Math.abs(deltaX) + Math.abs(deltaY)) / VEL); //+ getNodeFromSGbyID(smallgraphs, rutas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getExpectedservicetime();
 					
-					double arrival_time = Math.max(tiempo_ultima + travel_time, s_tiempo_fallas.get(0));
-					
+					double arrival_time = Math.max(tiempo_ultima + travel_time, s_tiempo_fallas.get(0) + travel_time);
+					//System.out.println("Voy a intentar agregar un nodo a una ruta en la semana " + j + " y va a llegar en el momento " +  arrival_time + " pero el máximo es " + smallgraphs.get(j).getTmax() + " y el mínimo es " + smallgraphs.get(j).getTmin());
 					if (arrival_time < smallgraphs.get(j).getTmax()) { // alcanzo a visitarla dentro de la semana?
 						Tres nueva = new Tres(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))),fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))), s_tiempo_fallas.get(0) );
+						//System.out.println("Agregue un nodo a una ruta");
 						rutas_todas.get(j).get(ruta_mod).add(nueva);
 						horas_todas.get(j).get(ruta_mod).add(arrival_time);
 						
@@ -237,8 +278,8 @@ public class DynamicSimulation {
 							prob_falla_prom = prob_falla_prom + gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getD().cdf(arrival_time - LastVisit[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1]);
 							denom_prob_falla++;
 							
-							costo_ciclo_prom = costo_ciclo_prom + (((gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getCw() * (arrival_time - NextFailure[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1]) + gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getCcm()))/(arrival_time - LastVisit[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1]));
-							denom_prob_falla++;
+							costo_ciclo_prom =  (costo_ciclo_prom + (((gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getCw() * (arrival_time - NextFailure[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1]) + gmm.getNodebyID(fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))).getCcm()))/(arrival_time - LastVisit[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0)))-1])));
+							denom_costo_ciclo++;
 						}			
 						
 						
@@ -248,8 +289,10 @@ public class DynamicSimulation {
 								gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCw() * (horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1]) +
 								 gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCcm(); 
 						
+						//System.out.println("El nodo es " + rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID());
 						//System.out.println("El costo de espera es  " + gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCw());
-						//System.out.println("La espera es  " + (horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1]) );
+						//System.out.println("La espera es  " + (horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) - NextFailure[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))) - 1]) );
+						//System.out.println("La espera es  " + (arrival_time - NextFailure[fallas.get(tiempo_fallas.indexOf(s_tiempo_fallas.get(0))) - 1]) );
 						//System.out.println("El mantenimiento me cuesta " + gmm.getNodebyID(rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()).getCcm() );
 						
 						NextFailure[rutas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1).getEventsSitesID()-1] = horas_todas.get(j).get(ruta_mod).get(rutas_todas.get(j).get(ruta_mod).size()-1) + 
@@ -268,17 +311,18 @@ public class DynamicSimulation {
 						sorted_ultima[0] = horas_todas.get(j).get(ruta_mod).get(horas_todas.get(j).get(ruta_mod).size()-1);; 
 						Arrays.sort(sorted_ultima);
 						
-//						System.out.println("Ultimas");
-//						for (int k = 0; k < sorted_ultima.length; k++) {
-//							System.out.println(ultimo_t[k] + "\t" + sorted_ultima[k]);
-//						}
+						//System.out.println("Ultimas");
+						//for (int k = 0; k < sorted_ultima.length; k++) {
+						//	System.out.println(ultimo_t[k] + "\t" + sorted_ultima[k]);
+						//}
 						
 						
 						// Borrarlo de donde está
-						for (int l = j; l < rutas_todas.size(); l++) { // itera sobre todas las semanas
+						for (int l = j+1; l < rutas_todas.size(); l++) { // itera sobre todas las semanas
 							for (int k = 0; k < rutas_todas.get(l).size(); k++) { //itera sobre todas las rutas de una semana
 								for (int k2 = 0; k2 < rutas_todas.get(l).get(k).size(); k2++) { //itera sobre todas las visitas de una ruta
 									if(rutas_todas.get(l).get(k).get(k2).getEventsSitesID() == nueva.getEventsSitesID()){
+										//System.out.println("Quite el nodo " + rutas_todas.get(l).get(k).get(k2).getEventsSitesID() + " de la ruta " + k + " de la semana " + l);
 										rutas_todas.get(l).get(k).remove(k2);
 										horas_todas.get(l).get(k).remove(k2);
 									}
@@ -311,9 +355,14 @@ public class DynamicSimulation {
 				
 							double travel_time2 = (Math.abs(deltaX2) + Math.abs(deltaY2)) / VEL;
 							
+							//if(tiempo_ultima_n + travel_time2 < smallgraphs.get(k).getTmax()){
+							//	System.out.println("OJO");
+							//}
+							
 							Tres nueva2 = new Tres(nueva.getEventsSitesID(),nueva.getEventsOperationsID(), tiempo_ultima_n + travel_time2);
 							rutas_todas.get(k).get(ruta_mod_nueva).add(nueva2);
 							horas_todas.get(k).get(ruta_mod_nueva).add(tiempo_ultima + travel_time2);
+							//System.out.println("Agregue un nodo a una ruta del futuro");
 							
 						}
 											
@@ -334,14 +383,30 @@ public class DynamicSimulation {
 				}				
 			}
 			
+			
+			//for (int i2 = 0; i2 < rutas_todas.size(); i2++) { //iterar sobre todas las semanas
+			//	writer2.println("Semana "+i);
+			//	for (int j = 0; j < rutas_todas.get(i2).size(); j++) { // itera sobre las rutas
+			//		String linea = new String();
+			//		linea = j + "\t";
+			//		for (int k = 0; k < rutas_todas.get(i2).get(j).size(); k++) {
+			//			linea = linea + rutas_todas.get(i2).get(j).get(k).getEventsSitesID() + "\t";
+			//		}
+			//		writer2.println(linea);
+			//	}
+			//}
+			
+			
+			
 			las_que_fallaron[i] = cuantas_fallaron;
 			prob_falla[i] = prob_falla_prom/denom_prob_falla;
 			costo_ciclo[i] = costo_ciclo_prom/denom_costo_ciclo;
 			las_que_hice[i] = cuantas_hice;
-			
-			writer.println(i + "\t" + main_cost[i] + "\t" + las_que_fallaron[i] + "\t" + las_que_hice[i] + "\t" + prob_falla[i] + costo_ciclo[i]);
+			//System.out.println(i + "\t" + main_cost[i] + "\t" + las_que_fallaron[i] + "\t" + las_que_hice[i] + "\t" + prob_falla[i] + "\t" +  costo_ciclo[i]);
+			writer.println(i + "\t" + main_cost[i] + "\t" + las_que_fallaron[i] + "\t" + las_que_hice[i] + "\t" + prob_falla[i]);
 		}
 		writer.close();
+		writer2.close();
 	}
 		
 	public static int indexOfArray(double[] array, double key) {
