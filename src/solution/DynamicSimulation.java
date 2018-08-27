@@ -428,7 +428,7 @@ public class DynamicSimulation {
 			
 			las_que_fallaron[i] = cuantas_fallaron;
 			prob_falla[i] = prob_falla_prom/denom_prob_falla;
-			costo_ciclo[i] = costo_ciclo_prom/denom_costo_ciclo;
+			costo_ciclo[i] = costo_ciclo_prom/cuantas_hice;
 			las_que_hice[i] = cuantas_hice;
 			//System.out.println(i + "\t" + main_cost[i] + "\t" + las_que_fallaron[i] + "\t" + las_que_hice[i] + "\t" + prob_falla[i] + "\t" +  costo_ciclo[i]);
 			writer.println(i + "\t" + main_cost[i] + "\t" + las_que_fallaron[i] + "\t" + las_que_hice[i] + "\t" + prob_falla[i] + "\t" + costo_ciclo[i]);
